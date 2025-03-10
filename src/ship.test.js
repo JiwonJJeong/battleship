@@ -23,3 +23,12 @@ test('hit function increments hits', () => {
     testShip.hit();
     expect(testShip.hits).toBe(2);
 });
+
+test('isSunk knows if ship is not sunk', () => {
+    expect(testShip.isSunk()).toBe(false);
+});
+
+test('isSunk knows if ship sunk', () => {
+    testShip.hit();
+    expect(testShip.isSunk()).toBe(true);
+});
