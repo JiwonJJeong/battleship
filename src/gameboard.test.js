@@ -22,3 +22,13 @@ test('receive attack misses are logged', () => {
 test('not attacked squares are identified', () => {
     expect(testBoard.wasAttacked([1,1])).toBe(false);
 })
+
+test('reports if all ships are not yet sunk', () => {
+    expect(testBoard.isAllSunk()).toBe(false);
+})
+
+test('reports if all ships are sunk', () => {
+    testBoard.receiveAttack([2,4]);
+    testBoard.receiveAttack([2,3]);
+    expect(testBoard.isAllSunk()).toBe(true);
+})
