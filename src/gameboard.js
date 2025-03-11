@@ -21,7 +21,6 @@ const Gameboard = function () {
         }
       }
     } catch (error) {
-        console.error("Bad inputs for newShip()");
         return error;
   }};
 
