@@ -18,3 +18,7 @@ test('receive attack misses are logged', () => {
     expect(testBoard.getShipFromCoords([2,5]).hits).toBe(1);
     expect(testBoard.wasAttacked([5,8])).toBe("miss");
 })
+
+test('not attacked squares are identified', () => {
+    expect(testBoard.wasAttacked([1,1])).toBe(false);
+})
