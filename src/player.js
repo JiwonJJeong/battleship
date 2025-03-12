@@ -1,7 +1,15 @@
+import {Gameboard} from "./gameboard.js"
+
 const Player = function(name){
+
+    let gameboard;
+    const init = function(){
+        gameboard = new Gameboard();
+    }();
 
     return{
         name,
+        gameboard,
     }
 }
 
