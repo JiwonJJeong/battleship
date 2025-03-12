@@ -1,4 +1,5 @@
 import {Ship} from "./ship.js";
+import {LinkedList} from "../node_modules/linked-lists/linkedlist.js"
 
 const Gameboard = function () {
   let boardMap;
@@ -9,6 +10,7 @@ const Gameboard = function () {
     attackMap = new Array(10).fill({});
   }();
 
+  let shipList = new LinkedList();
   // use rest parameter (...) to accept variable amount of coords
   const newShip = function (...coords) {
     try {
@@ -20,6 +22,8 @@ const Gameboard = function () {
           throw Error("Bad y input for newShip()");
         }
       }
+      // adding new ship to ship linked list
+      shipList.append(newShip);
     } catch (error) {
         return error;
   }};
@@ -44,7 +48,7 @@ const Gameboard = function () {
   }
 
   const isAllSunk = function(){
-
+    return (shipList.findCallback(false, "isSunk") == null);
   }
 
   return {
@@ -52,6 +56,7 @@ const Gameboard = function () {
     getShipFromCoords,
     receiveAttack,
     wasAttacked,
+    isAllSunk,
   };
 };
 
