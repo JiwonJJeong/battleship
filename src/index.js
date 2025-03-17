@@ -9,14 +9,14 @@ const GameManager = function(){
 
     const addNewShip = function(player, ...coords){
         player.gameboard.newShip(...coords);
-        RenderManager.renderNewShip(...coords);
+        RenderManager.renderNewShip(player.number,...coords);
     }
 
     let players;
     const initGame = function(){
-        const player1 = new humanPlayer("Amy");
-        const player2 = new humanPlayer("Bart");
-        RenderManager.initBoard();
+        const player1 = new humanPlayer("Amy", 1);
+        const player2 = new humanPlayer("Bart", 2);
+        RenderManager.initBoards(player1.number, player2.number);
         // each player has 5 ships of size 2, 3, 3, 4, 5
         addNewShip(player1,[0,0],[0,1])
         addNewShip(player1,[3,3],[4,3],[5,3]);

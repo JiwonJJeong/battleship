@@ -1,6 +1,6 @@
 import {Gameboard} from "./gameboard.js"
 
-const Player = function(name){
+const Player = function(name, number){
 
     let gameboard;
     const init = function(){
@@ -9,22 +9,23 @@ const Player = function(name){
 
     return{
         name,
+        number,
         gameboard,
     }
 }
 
-const computerPlayer = function(name){
+const computerPlayer = function(name, number){
 
     return{
         // inherit properties by composition
-        ...(new Player(name)),
+        ...(new Player(name, number)),
     }
 }
 
-const humanPlayer = function(name){
+const humanPlayer = function(name, number){
 
     return{
-        ...(new Player(name)),
+        ...(new Player(name, number)),
     }
 }
 

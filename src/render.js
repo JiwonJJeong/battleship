@@ -5,14 +5,17 @@ import "./styles.css";
 
 const RenderManager = function(){
     
-    const initBoard = function(){
+    let board1;
+    let board2;
+    const initBoards = function(player1Number, player2Number){
         const body = document.querySelector("body");
-        body.append(buildBoard());
+        board1 = buildBoard(player1Number);
+        board2 = buildBoard(player2Number);
+        body.append(board1, board2);
     };
 
-    let board;
-    const buildBoard = function(){
-        board = createElement("div","board container");
+    const buildBoard = function(playerNumber){
+        const board = createElement("div","board container");
         for (let i=0; i<10; i++){
             const row = createElement("div",`row-${i}`);
             for (let j=0; j<10; j++){
@@ -21,10 +24,17 @@ const RenderManager = function(){
             }
             board.append(row);
         }
+        board.classList.add(playerNumber)
         return board;
     }
 
-    const renderNewShip = function(...coords){
+    const renderNewShip = function(playerNumber,...coords){
+        let board;
+        if (playerNumber ==1){
+            board = board1;
+        } else{
+            board = board2;
+        }
         for (let [x,y] of coords){
             const squareToChange = board.querySelector(`div.row-${x} > div:nth-child(${y+1})`);
             squareToChange.classList.add("ship")
@@ -40,7 +50,7 @@ const RenderManager = function(){
     }
 
     return{
-        initBoard,
+        initBoards,
         renderNewShip,
     }
 
