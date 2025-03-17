@@ -12,6 +12,18 @@ const GameManager = function(){
         RenderManager.renderNewShip(player.number,...coords);
     }
 
+    const initPlay = function(){
+        // assign event listener for attacks
+            // use event delegation to find attacks
+            // use attack on gameboard module and receive either "hit" "miss" or Error
+            // check for ship sink
+            // check for game loss
+            // update render according to returned value, ship loss, and game loss
+            // toggle off player 1 and toggle on player 2 event listeners
+            // render change in turn
+        return;
+    };
+
     let players;
     const initGame = function(){
         const player1 = new humanPlayer("Amy", 1);
@@ -29,7 +41,9 @@ const GameManager = function(){
         addNewShip(player2,[0,3], [0,4],[0,5],[0,6]);
         addNewShip(player2,[5,5], [6,5],[7,5],[8,5],[9,5]);
         players = {player1, player2}
+        initPlay();
     }();
+
 
     return{
         players
