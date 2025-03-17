@@ -7,6 +7,10 @@ test('gameboard can place new ship coords', () => {
     expect(testBoard.getShipFromCoords([2,4]).length).toBe(3);
 })
 
+test('gameboard prevents overlapping ships', () =>{
+    expect(testBoard.newShip([2,3],[3,3],[4,3],[5,3])).toThrow();
+})
+
 test('receive attack hits ship on coord', () => {
     expect(testBoard.getShipFromCoords([2,5]).hits).toBe(0);
     testBoard.receiveAttack([2,5]);

@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import {GameManager} from "./index.js"
 
 test('GameManager initializes with 2 players', () => {
