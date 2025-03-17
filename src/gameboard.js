@@ -16,10 +16,13 @@ const Gameboard = function () {
     try {
       const newShip = new Ship(coords.length);
       for (let [x,y] of coords){
+        if (boardMap[x][y] != undefined){
+          throw new OverlappingShipError("Don't overlap ships");
+        }
         if (y < 10 && y >=0){
           boardMap[x][y] = newShip;
         } else{
-          throw Error("Bad y input for newShip()");
+          throw new BoundsError("Bad y input for newShip()");
         }
       }
       // adding new ship to ship linked list
