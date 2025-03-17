@@ -1,0 +1,21 @@
+
+
+.board.container{
+    display: flex;
+    flex-direction: column;
+
+    > div{
+        display: flex;
+        flex-direction: row;
+
+        div{
+            aspect-ratio: 1/1;
+            height: 20px;
+            background-color:gray;
+        }
+
+        .ship{
+            background-color: aqua;
+        }
+    }
+}

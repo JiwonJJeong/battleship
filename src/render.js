@@ -1,6 +1,7 @@
 // contains methods to populate DOM
 // render functions will display DOM elements
 // build functions will build elements and return them without display
+import "./styles.css";
 
 const RenderManager = function(){
     
