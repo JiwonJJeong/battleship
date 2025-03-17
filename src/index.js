@@ -19,7 +19,6 @@ const GameManager = function(){
         RenderManager.initBoard();
         // each player has 5 ships of size 2, 3, 3, 4, 5
         addNewShip(player1,[0,0],[0,1])
-        addNewShip(player1,[0,0],[0,1]);
         addNewShip(player1,[3,3],[4,3],[5,3]);
         addNewShip(player1,[7,6],[8,6],[9,6]);
         addNewShip(player1,[0,3], [0,4],[0,5],[0,6]);

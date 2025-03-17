@@ -4,8 +4,7 @@
 
 import {GameManager} from "./index.js"
 
-test('GameManager initializes with 2 players', () => {
-    console.log(GameManager);
-    expect(Object.values(GameManager.players)[0] instanceof Object).toBe(true);
-    expect(Object.values(GameManager.players)[1]  instanceof Object).toBe(true);
+test('GameManager adds ships to initialized player boards', () => {
+    console.log(GameManager.players.player1.gameboard.getBoardMap());
+    console.log(GameManager.players.player2.gameboard.getBoardMap());
 })

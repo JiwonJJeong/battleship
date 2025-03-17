@@ -6,30 +6,40 @@ const Gameboard = function () {
   let attackMap;
   // make each map an array of 10 with each array being an object (similar to hash map)
   const initBoard = function () {
-    boardMap = new Array(10).fill({});
-    attackMap = new Array(10).fill({});
+    boardMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    attackMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
   }();
+
+  const getBoardMap = function(){
+    return boardMap;
+  }
 
   let shipList = new LinkedList();
   // use rest parameter (...) to accept variable amount of coords
   const newShip = function (...coords) {
-    try {
       const newShip = new Ship(coords.length);
+      if (isShipAtCoords(...coords)){
+        throw new Error(`Don't overlap ships`);
+      }
       for (let [x,y] of coords){
-        if (boardMap[x][y] != undefined){
-          throw new OverlappingShipError("Don't overlap ships");
-        }
         if (y < 10 && y >=0){
           boardMap[x][y] = newShip;
         } else{
-          throw new BoundsError("Bad y input for newShip()");
+          throw new Error("Bad y input for newShip()");
         }
       }
       // adding new ship to ship linked list
       shipList.append(newShip);
-    } catch (error) {
-        return error;
-  }};
+  };
+
+  const isShipAtCoords = function(...coords){
+    for (let [x,y] of coords){
+      if (boardMap[x][y] !== undefined){
+        return true;
+      }
+    }
+    return false;
+  }
 
   const getShipFromCoords = function([x,y]){
     return boardMap[x][y];
@@ -60,6 +70,7 @@ const Gameboard = function () {
     receiveAttack,
     wasAttacked,
     isAllSunk,
+    getBoardMap,
   };
 };
 
