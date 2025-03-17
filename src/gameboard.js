@@ -46,14 +46,18 @@ const Gameboard = function () {
   }
 
   const receiveAttack = function([x,y]){
+    if (wasAttacked([x,y])){
+      throw new Error(`Cannot attack previous attacked (${x},${y})`);
+    }
     const ship = boardMap[x][y];
     if (typeof(ship) == "object"){
       ship.hit();
       attackMap[x][y]="hit";
+      return "hit";
     } else{
       attackMap[x][y] = "miss";
+      return "miss";
     }
-    return;
   }
 
   const wasAttacked = function([x,y]){

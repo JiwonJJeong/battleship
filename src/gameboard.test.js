@@ -15,14 +15,18 @@ test('gameboard prevents overlapping ships', () =>{
 
 test('receive attack hits ship on coord', () => {
     expect(testBoard.getShipFromCoords([2,5]).hits).toBe(0);
-    testBoard.receiveAttack([2,5]);
+    expect(testBoard.receiveAttack([2,5])).toBe("hit");
     expect(testBoard.getShipFromCoords([2,5]).hits).toBe(1);
 })
 
 test('receive attack misses are logged', () => {
-    testBoard.receiveAttack([5,8]);
+    expect(testBoard.receiveAttack([5,8])).toBe("miss");
     expect(testBoard.getShipFromCoords([2,5]).hits).toBe(1);
     expect(testBoard.wasAttacked([5,8])).toBe("miss");
+})
+
+test("prevent repeat attacks", () => {
+    expect(()=> (testBoard.receiveAttack([5,8]))).toThrow();
 })
 
 test('not attacked squares are identified', () => {
