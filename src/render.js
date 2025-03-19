@@ -15,16 +15,18 @@ const RenderManager = function(){
     };
 
     const buildBoard = function(playerNumber){
-        const board = createElement("div","board container");
+        const board = createElement("div",`board container-${playerNumber}`);
         for (let i=0; i<10; i++){
             const row = createElement("div",`row-${i}`);
+            row.setAttribute("row", i);
             for (let j=0; j<10; j++){
                 const square = createElement("div");
+                square.setAttribute("col", j);
                 row.append(square);
             }
             board.append(row);
         }
-        board.classList.add(playerNumber)
+        board.setAttribute("playernum", playerNumber);
         return board;
     }
 

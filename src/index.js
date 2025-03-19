@@ -14,7 +14,12 @@ const GameManager = function(){
 
     const initPlay = function(){
         // assign event listener for attacks
+        const board1 = document.querySelector(".board-1.container");
+        const board2 = document.querySelector(".board-2.container");
+        addEventListenerForBoard(board1);
+        addEventListenerForBoard(board2);
             // use event delegation to find attacks
+
             // use attack on gameboard module and receive either "hit" "miss" or Error
             // check for ship sink
             // check for game loss
@@ -43,6 +48,21 @@ const GameManager = function(){
         players = {player1, player2}
         initPlay();
     }();
+
+    const addEventListenerForBoard = function(boardDOMNode){
+        boardDOMNode.addEventListener("click", (event) =>{
+            let target = event.target;
+            let playerNumber = target.parentNode.parentNode.getAttribute("playernum");
+            let x = target.getAttribute("col");
+            let y = target.parentNode.getAttribute("row");
+            players[playerNumber].gameboard.receiveAttack([x,y]);
+            if (players[playerNumber].gameboard.isAllSunk()){
+                endGame(playerNumber);
+            } else{
+                passTurn();
+            }
+        })
+    }
 
 
     return{
