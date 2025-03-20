@@ -7,15 +7,24 @@ const RenderManager = function(){
     
     let board1;
     let board2;
-    const initBoards = function(player1Number, player2Number){
+    const initGameRender = function(player1Object, player2Object){
         const body = document.querySelector("body");
-        board1 = buildBoard(player1Number);
-        board2 = buildBoard(player2Number);
-        body.append(board1, board2);
+        const header = buildHeader();
+        board1 = buildBoardAndHeader(player1Object.number, player1Object.name);
+        board2 = buildBoardAndHeader(player2Object.number, player2Object.name);
+        body.append(header, board1, board2);
     };
 
-    const buildBoard = function(playerNumber){
-        const board = createElement("div",`board container-${playerNumber}`);
+    const buildHeader = function(){
+        const container = createElement("div","ui container");
+        const turnText = createElement("h1", "turn text");
+        turnText.textContent = "'s Turn";
+        container.append(turnText);
+        return container;
+    }
+
+    const buildBoardAndHeader = function(playerNumber, playerName){
+        const board = createElement("div",`board container`);
         for (let i=0; i<10; i++){
             const row = createElement("div",`row-${i}`);
             row.setAttribute("row", i);
@@ -27,7 +36,11 @@ const RenderManager = function(){
             board.append(row);
         }
         board.setAttribute("playernum", playerNumber);
-        return board;
+        const boardAndHeader = createElement("div",`board-and-header container player-${playerNumber}`);
+        const boardHeaderText= createElement("h2", "board header");
+        boardHeaderText.textContent = `${playerName}'s Board`;
+        boardAndHeader.append(boardHeaderText, board);
+        return boardAndHeader;
     }
 
     const renderNewShip = function(playerNumber,...coords){
@@ -52,7 +65,7 @@ const RenderManager = function(){
     }
 
     return{
-        initBoards,
+        initGameRender,
         renderNewShip,
     }
 
