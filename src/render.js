@@ -56,6 +56,10 @@ const RenderManager = function(){
         }
     }
 
+    const renderAttacked = function(squareDOMNode){
+        squareDOMNode.classList.add("attacked");
+    }
+
     const createElement = function(elementType, classString = undefined){
         let element = document.createElement(elementType);
         if (classString != undefined){
@@ -67,6 +71,7 @@ const RenderManager = function(){
     return{
         initGameRender,
         renderNewShip,
+        renderAttacked,
     }
 
 }();

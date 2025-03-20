@@ -21,6 +21,7 @@ const GameManager = function(){
             let gameboardObject = players[`player${playerNumber}`].gameboard;
             gameboardObject.receiveAttack([x,y]);
             console.log(`Received attack at (${x},${y}) for player ${playerNumber}`);
+            RenderManager.renderAttacked(target);
             if (gameboardObject.isAllSunk()){
                 //endGame(playerNumber);
             } else{

@@ -21,5 +21,13 @@
         .ship{
             background-color: aqua;
         }
+
+        .ship.attacked{
+            background-color: purple;
+        }
+
+        .attacked{
+            background-color: red;
+        }
     }
 }
