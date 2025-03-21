@@ -12,32 +12,50 @@ const GameManager = function(){
         RenderManager.renderNewShip(player.number,...coords);
     }
 
-    const addEventListenerForBoard = function(boardDOMNode){
-        boardDOMNode.addEventListener("click", (event) =>{
-            let target = event.target;
-            let playerNumber = target.parentNode.parentNode.getAttribute("playernum");
-            let x = target.getAttribute("col");
-            let y = target.parentNode.getAttribute("row");
-            let gameboardObject = players[`player${playerNumber}`].gameboard;
-            gameboardObject.receiveAttack([x,y]);
-            console.log(`Received attack at (${x},${y}) for player ${playerNumber}`);
-            RenderManager.renderAttacked(target);
-            if (gameboardObject.isAllSunk()){
-                //endGame(playerNumber);
-            } else{
-                //passTurn(boardDOMNode);
-            }
-        })
+    // passes turn to player 1 if number = 1
+    const passTurnTo = function(playerNumber){
+        if (playerNumber == 1){
+            deactivateEventListener(players.player2.boardDOM);
+            activateEventListener(players.player1.boardDOM);
+        } else{
+            deactivateEventListener(players.player1.boardDOM);
+            activateEventListener(players.player2.boardDOM);
+        }
+        RenderManager.renderTurnSwitchTo(playerNumber);
+    }
+
+    const deactivateEventListener = function(boardDOMNode){
+        boardDOMNode.removeEventListener("click", handleBoardClick);
+    }
+
+    const activateEventListener = function(boardDOMNode){
+        boardDOMNode.addEventListener("click", handleBoardClick);
+    }
+
+    const handleBoardClick = function(event){
+        let target = event.target;
+        let playerNumber = target.parentNode.parentNode.getAttribute("playernum");
+        let x = target.getAttribute("col");
+        let y = target.parentNode.getAttribute("row");
+        let gameboardObject = playerNumber == 1 ? players.player1.gameboard : players.player2.gameboard;
+        gameboardObject.receiveAttack([x,y]);
+        console.log(`Received attack at (${x},${y}) for player ${playerNumber}`);
+        RenderManager.renderAttacked(target);
+        if (gameboardObject.isAllSunk()){
+            //endGame(playerNumber);
+        } else{
+            passTurnTo((playerNumber % 2) + 1); // 2>1 and 1>2
+        }
     }
 
     const initPlay = function(){
         // assign event listener for attacks
         const board1 = document.querySelector(".board-and-header.player-1 .board.container");
         const board2 = document.querySelector(".board-and-header.player-2 .board.container");
-        addEventListenerForBoard(board1);
-        addEventListenerForBoard(board2);
+        players.player1.boardDOM = board1;
+        players.player2.boardDOM = board2;
         // later make first turn random or chosen
-        //passTurn(board1);
+        passTurnTo(1);
         return;
     };
 

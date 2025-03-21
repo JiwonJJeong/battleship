@@ -60,6 +60,12 @@ const RenderManager = function(){
         squareDOMNode.classList.add("attacked");
     }
 
+    const renderTurnSwitchTo = function(playerNumber){
+        // add screen swapping overlay
+        // playerNumber is number of player whose turn it should switch TO
+        // change header to "It is players{playerNumber}.name's turn"
+    }
+
     const createElement = function(elementType, classString = undefined){
         let element = document.createElement(elementType);
         if (classString != undefined){
@@ -72,6 +78,7 @@ const RenderManager = function(){
         initGameRender,
         renderNewShip,
         renderAttacked,
+        renderTurnSwitchTo,
     }
 
 }();
