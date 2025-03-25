@@ -60,10 +60,23 @@ const RenderManager = function(){
         squareDOMNode.classList.add("attacked");
     }
 
-    const renderTurnSwitchTo = function(playerNumber){
+    const renderTurnSwitchTo = function(playerNumber, playerName){
         // add screen swapping overlay
         // playerNumber is number of player whose turn it should switch TO
         // change header to "It is players{playerNumber}.name's turn"
+        const header = document.querySelector(".ui.container .turn.text");
+        header.textContent = `${playerName}'s Turn`;
+        // change board header from "Your Board" to "Enemy Board" and vis versa
+        const board1Header = board1.querySelector(".header");
+        const board2Header = board2.querySelector(".header");
+        if (playerNumber == 1){
+            board2Header.textContent = "Enemy Board";
+            board1Header.textContent = "Your Board";
+        } else {
+            board1Header.textContent = "Enemy Board";
+            board2Header.textContent = "Your Board";
+        }
+
     }
 
     const createElement = function(elementType, classString = undefined){

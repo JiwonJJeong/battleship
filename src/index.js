@@ -21,7 +21,9 @@ const GameManager = function(){
             deactivateEventListener(players.player1.boardDOM);
             activateEventListener(players.player2.boardDOM);
         }
-        RenderManager.renderTurnSwitchTo(playerNumber);
+        const playerName = Object.values(players)[playerNumber-1].name;
+        console.log(`${playerName}'s Turn`)
+        RenderManager.renderTurnSwitchTo(playerNumber, playerName);
     }
 
     const deactivateEventListener = function(boardDOMNode){
