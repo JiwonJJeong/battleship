@@ -33,3 +33,8 @@
         background-color: aqua;
     }
 }
+
+/* style dialog */
+::backdrop{
+    background-color: purple;
+}
