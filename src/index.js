@@ -13,16 +13,17 @@ const GameManager = function(){
     }
 
     // passes turn to player 1 if number = 1
+    // if it is player 1's turn, then board 2 should be ACTIVE
     const passTurnTo = function(playerNumber){
         if (playerNumber == 1){
-            deactivateEventListener(players.player2.boardDOM);
-            activateEventListener(players.player1.boardDOM);
-        } else{
-            deactivateEventListener(players.player1.boardDOM);
             activateEventListener(players.player2.boardDOM);
+            deactivateEventListener(players.player1.boardDOM);
+        } else{
+            activateEventListener(players.player1.boardDOM);
+            deactivateEventListener(players.player2.boardDOM);
         }
         const playerName = Object.values(players)[playerNumber-1].name;
-        console.log(`${playerName}'s Turn`)
+        console.log(`${playerName}'s Turn`);
         RenderManager.renderTurnSwitchTo(playerNumber, playerName);
     }
 
@@ -46,7 +47,7 @@ const GameManager = function(){
         if (gameboardObject.isAllSunk()){
             //endGame(playerNumber);
         } else{
-            passTurnTo((playerNumber % 2) + 1); // 2>1 and 1>2
+            passTurnTo(playerNumber); // We pass turn to player's board we just clicked
         }
     }
 
@@ -57,7 +58,7 @@ const GameManager = function(){
         players.player1.boardDOM = board1;
         players.player2.boardDOM = board2;
         // later make first turn random or chosen
-        board1.classList.add("visible");
+        board2.classList.add("visible");
         passTurnTo(1);
         const dialog = document.querySelector("dialog");
         dialog.close();
