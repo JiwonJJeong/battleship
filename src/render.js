@@ -7,12 +7,15 @@ const RenderManager = function(){
     
     let board1;
     let board2;
+    let dialog;
     const initGameRender = function(player1Object, player2Object){
         const body = document.querySelector("body");
         const header = buildHeader();
         board1 = buildBoardAndHeader(player1Object.number, player1Object.name);
         board2 = buildBoardAndHeader(player2Object.number, player2Object.name);
         body.append(header, board1, board2);
+        dialog = buildDialog();
+        body.append(dialog);
     };
 
     const buildHeader = function(){
@@ -43,6 +46,18 @@ const RenderManager = function(){
         return boardAndHeader;
     }
 
+    const buildDialog = function(){
+        const dialog = document.createElement("dialog");
+        const dialogHeader = createElement("h1", "dialog header");
+        dialogHeader.textContent = "Switch Players!"
+        const dialogSubtext = createElement("p", "dialog subtext");
+        dialogSubtext.textContent = "(click when ready)";
+        dialog.append(dialogHeader, dialogSubtext);
+        dialog.close();
+        dialog.addEventListener("click", ()=> {dialog.close()});
+        return dialog;
+    }
+
     const renderNewShip = function(playerNumber,...coords){
         let board;
         if (playerNumber ==1){
@@ -62,6 +77,7 @@ const RenderManager = function(){
 
     const renderTurnSwitchTo = function(playerNumber, playerName){
         // add screen swapping overlay
+        dialog.showModal();
         // playerNumber is number of player whose turn it should switch TO
         // change header to "It is players{playerNumber}.name's turn"
         const header = document.querySelector(".ui.container .turn.text");

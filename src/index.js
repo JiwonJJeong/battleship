@@ -58,6 +58,8 @@ const GameManager = function(){
         players.player2.boardDOM = board2;
         // later make first turn random or chosen
         passTurnTo(1);
+        const dialog = document.querySelector("dialog");
+        dialog.close();
         return;
     };
 
