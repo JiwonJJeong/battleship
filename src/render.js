@@ -92,7 +92,9 @@ const RenderManager = function(){
             board1Header.textContent = "Enemy Board";
             board2Header.textContent = "Your Board";
         }
-
+        // hide ships from enemy board and reveal ships on your board
+        board1.lastChild.classList.toggle("visible");
+        board2.lastChild.classList.toggle("visible");
     }
 
     const createElement = function(elementType, classString = undefined){

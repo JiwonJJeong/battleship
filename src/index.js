@@ -57,6 +57,7 @@ const GameManager = function(){
         players.player1.boardDOM = board1;
         players.player2.boardDOM = board2;
         // later make first turn random or chosen
+        board1.classList.add("visible");
         passTurnTo(1);
         const dialog = document.querySelector("dialog");
         dialog.close();
