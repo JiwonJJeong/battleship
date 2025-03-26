@@ -17,18 +17,12 @@ const GameManager = function(){
     const passTurnTo = function(playerNumber){
         if (playerNumber == 1){
             activateEventListener(players.player2.boardDOM);
-            deactivateEventListener(players.player1.boardDOM);
         } else{
             activateEventListener(players.player1.boardDOM);
-            deactivateEventListener(players.player2.boardDOM);
         }
         const playerName = Object.values(players)[playerNumber-1].name;
         console.log(`${playerName}'s Turn`);
         RenderManager.renderTurnSwitchTo(playerNumber, playerName);
-    }
-
-    const deactivateEventListener = function(boardDOMNode){
-        boardDOMNode.removeEventListener("click", handleBoardClick);
     }
 
     const activateEventListener = function(boardDOMNode){
@@ -40,12 +34,13 @@ const GameManager = function(){
         let playerNumber = target.parentNode.parentNode.getAttribute("playernum");
         let x = target.getAttribute("col");
         let y = target.parentNode.getAttribute("row");
-        let gameboardObject = playerNumber == 1 ? players.player1.gameboard : players.player2.gameboard;
-        gameboardObject.receiveAttack([x,y]);
+        let playerObject = playerNumber == 1 ? players.player1 : players.player2;
+        playerObject.gameboard.receiveAttack([x,y]);
         console.log(`Received attack at (${x},${y}) for player ${playerNumber}`);
         RenderManager.renderAttacked(target);
+        playerObject.boardDOM.removeEventListener("click", handleBoardClick);
         await shortSleep();
-        if (gameboardObject.isAllSunk()){
+        if (playerObject.gameboard.isAllSunk()){
             endGame(playerNumber);
         } else{
             passTurnTo(playerNumber); // We pass turn to player's board we just clicked
