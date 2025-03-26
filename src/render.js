@@ -97,6 +97,18 @@ const RenderManager = function(){
         board2.lastChild.classList.toggle("visible");
     }
 
+    // render ending game (playerName has won)
+    const renderEndGame = function(winnerName){
+        const winnerTextContainer = createElement("div", "end container");
+        const winnerText = createElement("h1", "winner text");
+        winnerText.textContent = `Congrats! ${winnerName} won.`;;
+        const playAgainButton = createElement("h2", "submit button");
+        playAgainButton.textContent = "Play Again?";
+        winnerTextContainer.append(winnerText, playAgainButton);
+        const body = document.querySelector("body");
+        body.append(winnerTextContainer);
+    }
+
     const createElement = function(elementType, classString = undefined){
         let element = document.createElement(elementType);
         if (classString != undefined){
@@ -110,6 +122,7 @@ const RenderManager = function(){
         renderNewShip,
         renderAttacked,
         renderTurnSwitchTo,
+        renderEndGame,
     }
 
 }();

@@ -35,7 +35,7 @@ const GameManager = function(){
         boardDOMNode.addEventListener("click", handleBoardClick);
     }
 
-    const handleBoardClick = function(event){
+    const handleBoardClick = async function(event){
         let target = event.target;
         let playerNumber = target.parentNode.parentNode.getAttribute("playernum");
         let x = target.getAttribute("col");
@@ -44,8 +44,9 @@ const GameManager = function(){
         gameboardObject.receiveAttack([x,y]);
         console.log(`Received attack at (${x},${y}) for player ${playerNumber}`);
         RenderManager.renderAttacked(target);
+        await shortSleep();
         if (gameboardObject.isAllSunk()){
-            //endGame(playerNumber);
+            endGame(playerNumber);
         } else{
             passTurnTo(playerNumber); // We pass turn to player's board we just clicked
         }
@@ -71,6 +72,7 @@ const GameManager = function(){
         const player2 = new humanPlayer("Bart", 2);
         RenderManager.initGameRender(player1, player2);
         // each player has 5 ships of size 2, 3, 3, 4, 5
+        // enterGameStaging();
         addNewShip(player1,[0,0],[0,1])
         addNewShip(player1,[3,3],[4,3],[5,3]);
         addNewShip(player1,[7,6],[8,6],[9,6]);
@@ -83,7 +85,41 @@ const GameManager = function(){
         addNewShip(player2,[5,5], [6,5],[7,5],[8,5],[9,5]);
         players = {player1, player2};
         initPlay();
+        //just for testing!
+        const header = document.querySelector(".ui.container");
+        header.addEventListener("click", () => RenderManager.renderEndGame("Skip to End!"))
     }();
+
+    // player with playerNumber lost
+    const endGame = function(playerNumber){
+        let winnerName;
+        if (playerNumber ==1){
+            winnerName = players.player2.name;
+        } else{
+            winnerName = players.player1.name;
+        }
+        RenderManager.renderEndGame(winnerName);
+        enterGameStaging();
+    }
+
+    const enterGameStaging = function(){
+        // activate drag and drop of ships to choose ship location using HTML drag and drop API!
+        // renderShipsOffBoard(board1);
+        // activateDragHandler(board1);
+            // if it is already on the board, remove it from gameboard data 
+            // should hold info about which square it is holding onto (and maybe rotation?)
+        // activateDropEvent(board1);
+            // should allow dragover divs
+            // on drop, first render overlaps as red!
+            // and on drop should calculate which square it is dropped at and info passed to from drag handler to store coordinates in gameboard
+        // break screen
+            // only allow if positions are valid and all filled
+        // repeat for board 2
+    }
+
+    const shortSleep = function(){
+        return new Promise(resolve => setTimeout(resolve, 1000));
+    }
 
     return{
         players
