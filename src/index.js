@@ -115,8 +115,7 @@ const GameManager = function(){
         players.player1.gameboard.resetBoard();
         players.player2.gameboard.resetBoard();
         RenderManager.renderShipsOffBoard(players.player1.boardDOM);
-        // activateDragHandler(board1);
-            // if it is already on the board, remove it from gameboard data 
+        activateDragHandler(players.player1.boardDOM);
             // should hold info about which square it is holding onto (and maybe rotation?)
         // activateDropEvent(board1);
             // should allow dragover divs
@@ -127,12 +126,41 @@ const GameManager = function(){
         // repeat for board 2
     }
 
+    const activateDragHandler = function(boardDOM){
+        const ships = boardDOM.parentNode.querySelectorAll(".ship.holder .container .ship");
+        for (let shipPart of ships){
+            shipPart.setAttribute("draggable", true);
+            shipPart.addEventListener("dragstart", dragstartHandler);
+        }
+    }
+
+    // target is div.ship.container > div
+    const dragstartHandler = function(event){
+        console.log("drag event triggered")
+        console.log(event)
+        const target = event.target;
+        const container = event.target.parentNode;
+        const dragData = {
+            shipLength: container.getAttribute("length"),
+            grabLocation: target.getAttribute("part"),
+            horizontal: container.getAttribute("horizontal"),
+        }
+        const widthOfDiv = 20;
+        const widthOfGap = 1;
+        // if grablocation = 0, don't add anything
+        // if grablocation = 1, add 1 gap and 1 div
+        // if grablocation = 2, add 2 gaps and 2 divs
+        const addOffsetX = (dragData.grabLocation * (widthOfDiv+widthOfGap));
+        event.dataTransfer.setDragImage(container,event.offsetX + addOffsetX,event.offsetY);
+        event.dataTransfer.setData("object", dragData);
+    }
+
     const shortSleep = function(){
         return new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     return{
-        players
+        players,
     }
 }();
 
