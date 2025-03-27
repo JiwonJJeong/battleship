@@ -32,8 +32,8 @@ const GameManager = function(){
     const handleBoardClick = async function(event){
         let target = event.target;
         let playerNumber = target.parentNode.parentNode.getAttribute("playernum");
-        let x = target.getAttribute("col");
-        let y = target.parentNode.getAttribute("row");
+        let y = target.getAttribute("col");
+        let x = target.parentNode.getAttribute("row");
         let playerObject = playerNumber == 1 ? players.player1 : players.player2;
         playerObject.gameboard.receiveAttack([x,y]);
         console.log(`Received attack at (${x},${y}) for player ${playerNumber}`);

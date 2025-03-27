@@ -116,12 +116,14 @@ const RenderManager = function(){
 
     const renderBoardReset = function(attackMap, shipMap, boardDOM){
         const board = boardDOM.querySelector(".board.container");
+        console.log(attackMap);
         for (let i=0; i<attackMap.length; i++){
             const row = i;
             const attackedInRow = Object.keys(attackMap[i]);
+            console.log(attackedInRow);
             const shipInRow = Object.keys(shipMap[i]);
             for (let attacked of attackedInRow){
-                const row = Number(attacked)+1;
+                const col = Number(attacked)+1;
                 const divToUnattack = board.querySelector(`div.row-${row} div:nth-child(${col})`);
                 divToUnattack.classList.remove("attacked")
             }
