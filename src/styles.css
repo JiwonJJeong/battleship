@@ -34,6 +34,27 @@
     }
 }
 
+/* style ships off board during staging */
+.ship.holder{
+    display: flex;
+    gap: 3px;
+    flex-direction: column;
+
+    .ship.container{
+        background-color: black;
+        width: min-content;
+        display: flex;
+        flex-direction: row;
+        gap: 1px;
+
+        div{
+            aspect-ratio: 1/1;
+            height: 20px;
+            background-color:gray;
+        }
+    }
+}
+
 /* style dialog */
 ::backdrop{
     background-color: purple;

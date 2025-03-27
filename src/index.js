@@ -82,7 +82,7 @@ const GameManager = function(){
         initPlay();
         //just for testing!
         const header = document.querySelector(".ui.container");
-        header.addEventListener("click", () => RenderManager.renderEndGame("Skip to End!"))
+        header.addEventListener("click", () => endGame(1))
     }();
 
     // player with playerNumber lost
@@ -94,12 +94,27 @@ const GameManager = function(){
             winnerName = players.player1.name;
         }
         RenderManager.renderEndGame(winnerName);
-        enterGameStaging();
+        activateReplayButton();
+    }
+
+    const activateReplayButton = function(){
+        const replayButton = document.querySelector("div.end.container button");
+        console.log(replayButton);
+        replayButton.addEventListener("click", enterGameStaging);
     }
 
     const enterGameStaging = function(){
         // activate drag and drop of ships to choose ship location using HTML drag and drop API!
-        // renderShipsOffBoard(board1);
+        console.log("Entering new game staging!")
+        RenderManager.renderStaging(
+            players.player1.gameboard.getAttackMap(),
+            players.player1.gameboard.getBoardMap(),
+            players.player2.gameboard.getAttackMap(),
+            players.player2.gameboard.getBoardMap()
+        );
+        players.player1.gameboard.resetBoard();
+        players.player2.gameboard.resetBoard();
+        RenderManager.renderShipsOffBoard(players.player1.boardDOM);
         // activateDragHandler(board1);
             // if it is already on the board, remove it from gameboard data 
             // should hold info about which square it is holding onto (and maybe rotation?)

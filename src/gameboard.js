@@ -14,6 +14,10 @@ const Gameboard = function () {
     return boardMap;
   }
 
+  const getAttackMap = function(){
+    return attackMap;
+  }
+
   let shipList = new LinkedList();
   // use rest parameter (...) to accept variable amount of coords
   const newShip = function (...coords) {
@@ -68,6 +72,11 @@ const Gameboard = function () {
     return (shipList.findCallback(false, "isSunk") == null);
   }
 
+  const resetBoard = function(){
+    boardMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    attackMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+  }
+
   return {
     newShip,
     getShipFromCoords,
@@ -75,6 +84,8 @@ const Gameboard = function () {
     wasAttacked,
     isAllSunk,
     getBoardMap,
+    resetBoard,
+    getAttackMap,
   };
 };
 

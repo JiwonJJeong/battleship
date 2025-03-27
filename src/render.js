@@ -102,11 +102,59 @@ const RenderManager = function(){
         const winnerTextContainer = createElement("div", "end container");
         const winnerText = createElement("h1", "winner text");
         winnerText.textContent = `Congrats! ${winnerName} won.`;;
-        const playAgainButton = createElement("h2", "submit button");
+        const playAgainButton = createElement("button", "reset button");
         playAgainButton.textContent = "Play Again?";
         winnerTextContainer.append(winnerText, playAgainButton);
         const body = document.querySelector("body");
         body.append(winnerTextContainer);
+    }
+
+    const renderStaging = function(attackMap1, shipMap1, attackMap2, shipMap2){
+        renderBoardReset(attackMap1, shipMap1, board1);
+        renderBoardReset(attackMap2, shipMap2, board2);
+    }
+
+    const renderBoardReset = function(attackMap, shipMap, boardDOM){
+        const board = boardDOM.querySelector(".board.container");
+        for (let i=0; i<attackMap.length; i++){
+            const row = i;
+            const attackedInRow = Object.keys(attackMap[i]);
+            const shipInRow = Object.keys(shipMap[i]);
+            for (let attacked of attackedInRow){
+                const row = Number(attacked)+1;
+                const divToUnattack = board.querySelector(`div.row-${row} div:nth-child(${col})`);
+                divToUnattack.classList.remove("attacked")
+            }
+            for (let ship of shipInRow){
+                const col = Number(ship)+1;
+                const divToUnship = board.querySelector(`div.row-${row} div:nth-child(${col})`);
+                divToUnship.classList.remove("ship")
+            }
+        }
+    }
+
+    const renderShipsOffBoard = function(boardDOM){
+        const shipHolder = createElement("div", "ship holder");
+        const ship2 = buildShipOfLength(2);
+        const ship3 = buildShipOfLength(3);
+        const ship3_2 = buildShipOfLength(3);
+        const ship4 = buildShipOfLength(4);
+        const ship5 = buildShipOfLength(5);
+        shipHolder.append(ship2,ship3, ship3_2, ship4, ship5);
+        boardDOM.after(shipHolder);
+    }
+
+    const buildShipOfLength = function(length){
+        const shipContainer = createElement("div", "ship container");
+        shipContainer.setAttribute("horizontal", true);
+        shipContainer.setAttribute("length", length);
+        for (let i =0; i <length; i++){
+            const div = document.createElement("div");
+            div.classList.add("ship");
+            div.setAttribute("part",i);
+            shipContainer.append(div);
+        }
+        return shipContainer;
     }
 
     const createElement = function(elementType, classString = undefined){
@@ -123,6 +171,8 @@ const RenderManager = function(){
         renderAttacked,
         renderTurnSwitchTo,
         renderEndGame,
+        renderStaging,
+        renderShipsOffBoard,
     }
 
 }();
