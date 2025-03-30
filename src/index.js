@@ -114,9 +114,11 @@ const GameManager = function(){
         );
         players.player1.gameboard.resetBoard();
         players.player2.gameboard.resetBoard();
-        RenderManager.renderShipsOffBoard(players.player1.boardDOM);
-        activateDragHandler(players.player1.boardDOM);
+        const board1 = players.player1.boardDOM;
+        RenderManager.renderShipsOffBoard(board1);
+        activateDragHandler(board1);
             // should hold info about which square it is holding onto (and maybe rotation?)
+        activateAllOndragover(board1);
         // activateDropEvent(board1);
             // should allow dragover divs
             // on drop, first render overlaps as red!
@@ -153,6 +155,64 @@ const GameManager = function(){
         const addOffsetX = (dragData.grabLocation * (widthOfDiv+widthOfGap));
         event.dataTransfer.setDragImage(container,event.offsetX + addOffsetX,event.offsetY);
         event.dataTransfer.setData("object", dragData);
+        // dynamically allow where we can drop with ondragover attribute
+        const playerNumber = container.previousElementSibling.getAttribute("playernum");
+        let boardDOMNode;
+        if (playerNumber == 1){
+            boardDOMNode = players.player1.boardDOM;
+        } else if (playerNumber == 2){
+            boardDOMNode = players.player2.boardDOM;
+        }
+        activateOndragover(boardDOMNode, dragData);
+    }
+
+    const activateAllOndragover = function(boardDOM){
+        for (let row of boardDOM.childNodes){
+            for (let square of row.childNodes){
+                square.addEventListener("ondragover", ondragoverHandler)
+                square.setAttribute("dragListening", true);
+            }
+        }
+    }
+
+    const toggleOndragover = function(boardDOM, dragData){
+        const rows = boardDOM.childNodes;
+        if (dragData.isHorizontal){
+            // if shipLength is 3, and grab location is 1 (the middle of ship)
+            // prevent dropping on col 0 [less than 1] and col 9 [more than 10-(3-1)]
+            for (let row of rows){
+                const squares = row.childNodes;
+                for (let i =dragData.grabLocation; i<10-(dragData.shipLength - dragData.grabLocation); i++){
+                    const square = squares[i];
+                    if (square.getAttribute("dragListening") == true){
+                        square.removeEventListener("ondragover", ondragoverHandler);
+                        square.setAttribute("dragListening", false);
+                    } else{
+                        square.addEventListener("ondragover", ondragoverHandler);
+                        square.setAttribute("dragListening", true);
+                    }
+                }
+            }
+        } else{
+            // if ship is vertical, do same limiting logic on the rows, not columns
+            for (let i =dragData.grabLocation; i<10-(dragData.shipLength - dragData.grabLocation); i++){
+                const row = rows[i];
+                const squares = row.childNodes;
+                for (let square of squares){
+                    if (square.getAttribute("dragListening") == true){
+                        square.removeEventListener("ondragover", ondragoverHandler);
+                        square.setAttribute("dragListening", false);
+                    } else{
+                        square.addEventListener("ondragover", ondragoverHandler);
+                        square.setAttribute("dragListening", true);
+                    }
+                }
+            }
+        }
+    }
+
+    const ondragoverHandler = function(ev){
+        ev.preventDefault();
     }
 
     const shortSleep = function(){
