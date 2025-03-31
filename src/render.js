@@ -135,19 +135,20 @@ const RenderManager = function(){
 
     const renderShipsOffBoard = function(boardDOM){
         const shipHolder = createElement("div", "ship holder");
-        const ship2 = buildShipOfLength(2);
-        const ship3 = buildShipOfLength(3);
-        const ship3_2 = buildShipOfLength(3);
-        const ship4 = buildShipOfLength(4);
-        const ship5 = buildShipOfLength(5);
+        const ship2 = buildShipOfLength(2,1);
+        const ship3 = buildShipOfLength(3,2);
+        const ship3_2 = buildShipOfLength(3,3);
+        const ship4 = buildShipOfLength(4,4);
+        const ship5 = buildShipOfLength(5,5);
         shipHolder.append(ship2,ship3, ship3_2, ship4, ship5);
         boardDOM.after(shipHolder);
     }
 
-    const buildShipOfLength = function(length){
+    const buildShipOfLength = function(length, id){
         const shipContainer = createElement("div", "ship container");
         shipContainer.setAttribute("horizontal", true);
         shipContainer.setAttribute("length", length);
+        shipContainer.id = id;
         for (let i =0; i <length; i++){
             const div = document.createElement("div");
             div.classList.add("ship");
