@@ -65,9 +65,19 @@ const RenderManager = function(){
         } else{
             board = board2;
         }
+        let i=0;
+        const shipLength = arguments.length - 1;
+        let isHorizontal = false;
+        if (coords[1][0] == coords[0][0]){
+            isHorizontal = true;
+        }
         for (let [x,y] of coords){
             const squareToChange = board.querySelector(`div.row-${x} > div:nth-child(${y+1})`);
-            squareToChange.classList.add("ship")
+            squareToChange.classList.add("ship");
+            squareToChange.setAttribute("length", shipLength);
+            squareToChange.setAttribute("grabLocation", i);
+            squareToChange.setAttribute("horizontal", isHorizontal)
+            i++;
         }
     }
 
@@ -133,29 +143,67 @@ const RenderManager = function(){
         }
     }
 
-    const renderShipsOffBoard = function(boardDOM){
-        const shipHolder = createElement("div", "ship holder");
-        const ship2 = buildShipOfLength(2,1);
-        const ship3 = buildShipOfLength(3,2);
-        const ship3_2 = buildShipOfLength(3,3);
-        const ship4 = buildShipOfLength(4,4);
-        const ship5 = buildShipOfLength(5,5);
-        shipHolder.append(ship2,ship3, ship3_2, ship4, ship5);
-        boardDOM.after(shipHolder);
+    const renderShipSamples = function(){
+        const hiddenContainer = createElement("div", "hidden samples");
+        const horizontalShips = createElement("div", "ships horizontal");
+        const verticalShips = createElement("div", "ships vertical");
+        horizontalShips.append(buildShipOfLength(2), buildShipOfLength(3),
+        buildShipOfLength(4), buildShipOfLength(5));
+        verticalShips.append(buildShipOfLength(2), buildShipOfLength(3),
+        buildShipOfLength(4), buildShipOfLength(5));
+        hiddenContainer.append(horizontalShips,verticalShips);
+        const body = document.querySelector("body")
+        body.append(hiddenContainer);
     }
 
-    const buildShipOfLength = function(length, id){
-        const shipContainer = createElement("div", "ship container");
-        shipContainer.setAttribute("horizontal", true);
-        shipContainer.setAttribute("length", length);
-        shipContainer.id = "ship-"+id;
-        for (let i =0; i <length; i++){
-            const div = document.createElement("div");
-            div.classList.add("ship");
-            div.setAttribute("part",i);
-            shipContainer.append(div);
+    const buildShipOfLength = function(length){
+        const container = createElement("div","ship container");
+        container.id = `length-${length}`;
+        for (let i =0; i<length; i++){
+            const part = createElement("div");
+            container.append(part);
         }
-        return shipContainer;
+        return container;
+    }
+
+    const renderMoveShip = function([oldXStart, oldYStart], [newXStart, newYStart], shipLength, isHorizontal, boardDOMNode){
+        if (oldXStart == newXStart && oldYStart == newYStart){
+            return;
+        }
+        if (isHorizontal == "true"){
+            for (let i=0; i<shipLength; i++){
+                const squareToRemove = boardDOMNode.querySelector(`.row-${oldXStart} div:nth-child(${oldYStart+i+1})`);
+                console.log(`.row-${oldXStart} .div:nth-child(${oldYStart+i+1})`)
+                const grablocation = squareToRemove.getAttribute("grablocation");
+                squareToRemove.removeAttribute("draggable");
+                squareToRemove.removeAttribute("length");
+                squareToRemove.removeAttribute("grablocation");
+                squareToRemove.removeAttribute("horizontal");
+                squareToRemove.classList.remove("ship")
+                const squareToAdd = boardDOMNode.querySelector(`.row-${newXStart} div:nth-child(${newYStart+i+1})`);
+                squareToAdd.setAttribute("draggable", true);
+                squareToAdd.setAttribute("length", shipLength);
+                squareToAdd.setAttribute("grablocation", grablocation);
+                squareToAdd.setAttribute("horizontal", isHorizontal);
+                squareToAdd.classList.add("ship");
+            }
+        } else{
+            for (let i=0; i<shipLength; i++){
+                const squareToRemove = boardDOMNode.querySelector(`.row-${oldXStart-i} .div:nth-child(${oldYStart+1})`);
+                const grablocation = squareToRemove.getAttribute("grablocation");
+                squareToRemove.removeAttribute("draggable");
+                squareToRemove.removeAttribute("length");
+                squareToRemove.removeAttribute("grablocation");
+                squareToRemove.removeAttribute("horizontal");
+                squareToRemove.classList.remove("ship")
+                const squareToAdd = boardDOMNode.querySelector(`.row-${newXStart-i} .div:nth-child(${newYStart+1})`);
+                squareToAdd.setAttribute("draggable", true);
+                squareToAdd.setAttribute("length", shipLength);
+                squareToAdd.setAttribute("grablocation", grablocation);
+                squareToAdd.setAttribute("horizontal", isHorizontal);
+                squareToAdd.classList.add("ship");
+            }
+        }
     }
 
     const createElement = function(elementType, classString = undefined){
@@ -173,7 +221,8 @@ const RenderManager = function(){
         renderTurnSwitchTo,
         renderEndGame,
         renderStaging,
-        renderShipsOffBoard,
+        renderShipSamples,
+        renderMoveShip,
     }
 
 }();

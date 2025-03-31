@@ -77,6 +77,65 @@ const Gameboard = function () {
     attackMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
   }
 
+  const isThisAdjacent = function([x,y], length, isHorizontal, shipObject){
+    if (isHorizontal == "true"){
+      // if horizontal, check around [x,y], [x+1,y], ... [x+length-1,y]
+      for (let i=0; i<length; i++){
+        return (adjacencyMap[x+i,y] !== undefined && adjacencyMap[x+i,y] !== shipObject)
+      }
+    } else{
+      // if vertical, check around [x,y], [x,y-1], ... [x,y-length+1]
+      for (let i=0; i<length; i++){
+        return (adjacencyMap[x,y-i] !== undefined && adjacencyMap[x,y-i] !== shipObject)
+      }
+    }
+    return false;
+  }
+
+  let adjacencyMap;
+  const createAdjacencyMap = function(){
+    adjacencyMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    for (let i=0; i<10; i++){
+      for (let j=0; j<10; j++){
+        if (boardMap[i][j] !== undefined){
+          adjacencyMap[i][j] = boardMap[i][j];
+          if (j>0){
+            adjacencyMap[i][j-1]=boardMap[i][j];
+            if (i>0){
+              adjacencyMap[i-1][j-1]=boardMap[i][j];
+            } else if (i<9){
+              adjacencyMap[i+1][j-1] = boardMap[i][j];
+            }
+          }
+          if (j<9){
+            adjacencyMap[i][j+1] = boardMap[i][j];
+            if (i>0){
+              adjacencyMap[i-1][j+1]=boardMap[i][j];
+            } else if (i<9){
+              adjacencyMap[i+1][j+1] = boardMap[i][j];
+            }
+          }
+          if (i>0){
+            adjacencyMap[i-1][j] = boardMap[i][j];
+          } else if (i<9){
+            adjacencyMap[i+1][j]=boardMap[i][j];
+          }
+        }
+      }
+    }
+  }
+
+  const moveShip = function(ship,...coords){
+    for (let row of attackMap){
+      for (let col of Object.values(row)){
+        if (col == ship){
+          col = null;
+        }
+      }
+    }
+    newShip(coords);
+  }
+
   return {
     newShip,
     getShipFromCoords,
@@ -86,6 +145,9 @@ const Gameboard = function () {
     getBoardMap,
     resetBoard,
     getAttackMap,
+    isThisAdjacent,
+    moveShip,
+    createAdjacencyMap,
   };
 };
 
