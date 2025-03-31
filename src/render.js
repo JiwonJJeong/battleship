@@ -148,7 +148,7 @@ const RenderManager = function(){
         const shipContainer = createElement("div", "ship container");
         shipContainer.setAttribute("horizontal", true);
         shipContainer.setAttribute("length", length);
-        shipContainer.id = id;
+        shipContainer.id = "ship-"+id;
         for (let i =0; i <length; i++){
             const div = document.createElement("div");
             div.classList.add("ship");

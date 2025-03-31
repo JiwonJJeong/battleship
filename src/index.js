@@ -246,23 +246,25 @@ const GameManager = function(){
         const shipLength = ev.dataTransfer.getData("shipLength");
         const horizontal = ev.dataTransfer.getData("horizontal");
         const shipId = ev.dataTransfer.getData("shipId");
-        const grabLocation = ev.dataTransfer.getData("grabLocation");
+        const grabLocation = Number(ev.dataTransfer.getData("grabLocation"));
         const droppedSquare = ev.target;
         const droppedRow = droppedSquare.parentNode;
-        const oldShip = document.querySelector(`.ship.holder .container .ship#${shipId}`);
+        const oldShip = document.querySelector(`.ship.holder #${shipId}`);
         const oldShipParts = oldShip.childNodes;
-        const droppedColIndex = droppedSquare.getAttribute("col");
+        console.log(oldShipParts)
+        const droppedColIndex = Number(droppedSquare.getAttribute("col"));
         // grab location already accounts for shiplength on left side
         // if grabLocation goes up, start index should DECREASE and end index should INCREASE from droppedColIndex
         // if shipLength is 5, grab position is 3 (4th part), and dropColIndex is 7 then fill square indexes 4 (7-3),5,6,7,8 (7-3+4)
         if (horizontal == "true"){
             const squaresOfRow = droppedRow.childNodes;
             for (let i = 0; i < shipLength; i++){
-                squaresOfRow[droppedColIndex+i-grabLocation].appendChild(oldShipParts[i]);
+                squaresOfRow[droppedColIndex+i-grabLocation].appendChild(oldShipParts[0]);
             }
         } else {
             // add squares vertically
         }
+        toggleOndragoverBoard(droppedRow.parentNode, ev, true);
     }
 
     const shortSleep = function(){
