@@ -10,7 +10,7 @@ The Odin Project JS project to implement the classic game "battleship" using tes
 - Combine event delegation, HTML attributes, and Drag and Drop API to create drag and drop board setup.
 
 ### Takeaways for future
-- A dynamic callback function has syntax of \[nameOfFunc\]()" in the function
+- A dynamic callback function has syntax of \[nameOfFunc\]() in the function
 - and pass in the nameOfFunc as a string to call the function
 - Don't start HTML class names with digits
 - Think about which module code should go into -- especially when writing driver code
