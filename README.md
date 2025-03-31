@@ -13,3 +13,8 @@ The Odin Project JS project to implement the classic game "battleship" using tes
 - A dynamic callback function has syntax of [nameOfFunc]() in the function
 - and pass in the nameOfFunc as a string to call the function
 - Don't start HTML class names with digits
+- Think about which module code should go into -- especially when writing driver code
+- CSS pseudoclass :nth-child(x) counts from 1, not 0
+- Data transfers from DragEvent objects are converted to string data types
+- Cannot use normal Drag and Drop API implementation with ES6 Modules. Need to use event listeners for "drop", "dragstart", etc...
+
