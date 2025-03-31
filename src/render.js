@@ -173,7 +173,6 @@ const RenderManager = function(){
         if (isHorizontal == "true"){
             for (let i=0; i<shipLength; i++){
                 const squareToRemove = boardDOMNode.querySelector(`.row-${oldXStart} div:nth-child(${oldYStart+i+1})`);
-                console.log(`.row-${oldXStart} .div:nth-child(${oldYStart+i+1})`)
                 const grablocation = squareToRemove.getAttribute("grablocation");
                 squareToRemove.removeAttribute("draggable");
                 squareToRemove.removeAttribute("length");

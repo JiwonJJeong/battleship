@@ -201,11 +201,15 @@ const GameManager = function(){
         const row = Number(ev.target.parentNode.getAttribute("row"));
         const col = Number(ev.target.getAttribute("col"));
         let newStartRow = row;
+        let oldStartRow = startRow;
         let newStartCol = col;
+        let oldStartCol = startCol;
         if (isHorizontal == "true"){
             newStartCol = col - grabLocation;
+            oldStartCol = startCol - grabLocation;
         } else{
             newStartRow = row - grabLocation;
+            oldStartRow = startRow - grabLocation;
         }
         const playerNum = ev.target.parentNode.parentNode.getAttribute("playernum");
         let player;
@@ -214,19 +218,43 @@ const GameManager = function(){
         } else{
             player = players.player2;
         }
-        const oldStartRow = startRow;
-        const oldStartCol = startCol;
         if (isShipDragOnBoard(isHorizontal, shipLength, grabLocation,row,col) 
-            && !player.gameboard.isThisAdjacent([oldStartRow,oldStartCol],[newStartRow,newStartCol],shipLength,isHorizontal)){
+            && !player.gameboard.isThisAdjacent([oldStartRow,oldStartCol],[newStartRow,newStartCol],
+        shipLength,isHorizontal,player.gameboard.getShipFromCoords([oldStartRow,oldStartCol]))){
                 ev.preventDefault();
-                RenderManager.renderMoveShip([oldStartRow,oldStartCol],
-                    [newStartRow,newStartCol], shipLength, isHorizontal, player.boardDOM)
-                console.log("dragover detected!")
+                    console.log("viable dragover detected!")
+                }
         }
-    }
 
     const dropHandler = function(ev){
         ev.preventDefault();
+        const row = Number(ev.target.parentNode.getAttribute("row"));
+        const col = Number(ev.target.getAttribute("col"));
+        let newStartRow = row;
+        let oldStartRow = startRow;
+        let newStartCol = col;
+        let oldStartCol = startCol;
+        if (isHorizontal == "true"){
+            newStartCol = col - grabLocation;
+            oldStartCol = startCol - grabLocation;
+        } else{
+            newStartRow = row - grabLocation;
+            oldStartRow = startRow - grabLocation;
+        }
+        const playerNum = ev.target.parentNode.parentNode.getAttribute("playernum");
+        let player;
+        if (playerNum == 1){
+            player = players.player1;
+        } else{
+            player = players.player2;
+        }
+        if (!(oldStartRow == newStartRow && oldStartCol == newStartCol)){
+            RenderManager.renderMoveShip([oldStartRow,oldStartCol],
+                [newStartRow,newStartCol], shipLength, isHorizontal, player.boardDOM);
+            player.gameboard.moveShip(player.gameboard.getShipFromCoords([oldStartRow,oldStartCol]),
+            [newStartRow,newStartCol], shipLength, isHorizontal);
+            player.gameboard.createAdjacencyMap();
+        }
     }
 
     const shortSleep = function(){

@@ -125,12 +125,22 @@ const Gameboard = function () {
     }
   }
 
-  const moveShip = function(ship,...coords){
+  const moveShip = function(ship,[startX,startY],length, isHorizontal){
     for (let row of attackMap){
       for (let col of Object.values(row)){
         if (col == ship){
           col = null;
         }
+      }
+    }
+    const coords = [];
+    if (isHorizontal == "true"){
+      for (let i=0; i<length; i++){
+        coords.push([startX+i,startY])
+      }
+    } else {
+      for (let i=0; i<length; i++){
+        coords.push([startX,startY-i])
       }
     }
     newShip(coords);
