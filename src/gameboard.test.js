@@ -42,3 +42,31 @@ test('reports if all ships are sunk', () => {
     testBoard.receiveAttack([2,3]);
     expect(testBoard.isAllSunk()).toBe(true);
 })
+
+test('coords adjacent flagged NOT allowed for horizontal', () => {
+    testBoard.newShip([7,4],[8,4],[9,4]);
+    const shipToTest = testBoard.getShipFromCoords([7,4]);
+    testBoard.createAllowedPositionMap(shipToTest, "true");
+    expect(testBoard.isThisAllowedPlacement([2,2])).toBe(false);
+})
+
+test('coords adjacent flagged NOT allowed for vertical', () => {
+    testBoard.newShip([0,1],[0,2],[0,3],[0,4],[0,5]);
+    const shipToTest = testBoard.getShipFromCoords([0,1]);
+    testBoard.createAllowedPositionMap(shipToTest, "false");
+    expect(testBoard.isThisAllowedPlacement([8,5])).toBe(false);
+})
+
+test('out of bounds flagged NOT allowed', () => {
+    expect(testBoard.isThisAllowedPlacement([9,9])).toBe(false);
+})
+
+test('does not flag adjacency to self', () => {
+    expect(testBoard.isThisAllowedPlacement([0,0])).toBe(true);
+})
+
+test('does not flag non adjacencies', () => {
+    const shipToTest = testBoard.getShipFromCoords([0,1]);
+    console.log(testBoard.createAllowedPositionMap(shipToTest, "false"));
+    expect(testBoard.isThisAllowedPlacement([4,2])).toBe(true);
+})

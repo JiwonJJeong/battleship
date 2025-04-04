@@ -18,6 +18,9 @@ const Gameboard = function () {
     return attackMap;
   }
 
+  // based on the way we implemented,
+  // the first index for array is the x-value or the column in a matrix/grid
+  // the second index for object key is the y-value or the row in a matrix/grid (increases going down)
   let shipList = new LinkedList();
   // use rest parameter (...) to accept variable amount of coords
   const newShip = function (...coords) {
@@ -77,52 +80,92 @@ const Gameboard = function () {
     attackMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
   }
 
-  const isThisAdjacent = function([x,y], length, isHorizontal, shipObject){
-    if (isHorizontal == "true"){
-      // if horizontal, check around [x,y], [x+1,y], ... [x+length-1,y]
-      for (let i=0; i<length; i++){
-        return (adjacencyMap[x+i,y] !== undefined && adjacencyMap[x+i,y] !== shipObject)
-      }
-    } else{
-      // if vertical, check around [x,y], [x,y-1], ... [x,y-length+1]
-      for (let i=0; i<length; i++){
-        return (adjacencyMap[x,y-i] !== undefined && adjacencyMap[x,y-i] !== shipObject)
-      }
-    }
-    return false;
+  // USES allowed position map created with specific info about ship orientation and length
+  const isThisAllowedPlacement = function([x,y]){
+    return allowedPositionMap[x][y];
   }
 
-  let adjacencyMap;
-  const createAdjacencyMap = function(){
-    adjacencyMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
-    for (let i=0; i<10; i++){
-      for (let j=0; j<10; j++){
-        if (boardMap[i][j] !== undefined){
-          adjacencyMap[i][j] = boardMap[i][j];
-          if (j>0){
-            adjacencyMap[i][j-1]=boardMap[i][j];
-            if (i>0){
-              adjacencyMap[i-1][j-1]=boardMap[i][j];
-            } else if (i<9){
-              adjacencyMap[i+1][j-1] = boardMap[i][j];
-            }
-          }
-          if (j<9){
-            adjacencyMap[i][j+1] = boardMap[i][j];
-            if (i>0){
-              adjacencyMap[i-1][j+1]=boardMap[i][j];
-            } else if (i<9){
-              adjacencyMap[i+1][j+1] = boardMap[i][j];
-            }
-          }
-          if (i>0){
-            adjacencyMap[i-1][j] = boardMap[i][j];
-          } else if (i<9){
-            adjacencyMap[i+1][j]=boardMap[i][j];
+  let allowedPositionMap;
+  // uses adjacency map and ship length to show all posible topleft positions for the ship
+  const createAllowedPositionMap = function(shipObject, isHorizontal){
+    const adjacencyMap = createAdjacencyMap();
+    allowedPositionMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    const length = shipObject.length;
+    if (isHorizontal == "true"){
+      for (let x = 0; x<10; x++){
+        for (let y=0; y<10; y++){
+          if (y> (10-length)){
+            allowedPositionMap[x][y] = false;
+          } else{
+            allowedPositionMap[x][y] = isShipFitAdjacency([x,y], shipObject, isHorizontal, adjacencyMap);
+          } 
+        }
+      }
+     } else{
+      for (let x = 0; x<10; x++){
+        for (let y=0; y<10; y++){
+          if (y > (10-length)){
+              allowedPositionMap[x][y] = false;
+          } else {
+            allowedPositionMap[x][y] = isShipFitAdjacency([x,y],shipObject, isHorizontal, adjacencyMap);
           }
         }
       }
     }
+    return allowedPositionMap;
+  };
+
+  const isShipFitAdjacency = function([x,y],shipObject, isHorizontal, map){
+    const length = shipObject.length;
+    if (isHorizontal == "true"){
+      for (let i=0; i<length; i++){
+        if (typeof map[x+i] !== "undefined" && typeof map[x+i][y] !== "undefined" && map[x+i][y] != shipObject){
+          return false;
+        }
+      }
+    } else {
+      for (let i=0; i<length; i++){
+        if (typeof map[x] !== "undefined" && typeof map[x][y+i] !== "undefined" && map[x][y+i] != shipObject){
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+
+  const createAdjacencyMap = function(){
+    let adjacencyMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    for (let i=0; i<10; i++){
+      for (let j=0; j<10; j++){
+        if (typeof boardMap[i][j] !== "undefined"){
+          const ship = boardMap[i][j];
+          adjacencyMap[i][j] = ship;
+          if (j>0){
+            adjacencyMap[i][j-1]=ship;
+            if (i>0){
+              adjacencyMap[i-1][j-1]=ship;
+            } if (i<9){
+              adjacencyMap[i+1][j-1] = ship;
+            }
+          }
+          if (j<9){
+            adjacencyMap[i][j+1] = ship;
+            if (i>0){
+              adjacencyMap[i-1][j+1]=ship;
+            } if (i<9){
+              adjacencyMap[i+1][j+1] = ship;
+            }
+          }
+          if (i>0){
+            adjacencyMap[i-1][j] = ship;
+          } if (i<9){
+            adjacencyMap[i+1][j]=ship;
+          }
+        }
+      }
+    }
+    return adjacencyMap;
   }
 
   const moveShip = function(ship,[startX,startY],length, isHorizontal){
@@ -155,9 +198,9 @@ const Gameboard = function () {
     getBoardMap,
     resetBoard,
     getAttackMap,
-    isThisAdjacent,
+    isThisAllowedPlacement,
     moveShip,
-    createAdjacencyMap,
+    createAllowedPositionMap,
   };
 };
 
