@@ -112,6 +112,7 @@ const Gameboard = function () {
         }
       }
     }
+    console.log("allowed position map created")
     return allowedPositionMap;
   };
 
