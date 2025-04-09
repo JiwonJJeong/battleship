@@ -119,7 +119,7 @@ const Gameboard = function () {
 
   const isShipFitAdjacency = function([x,y],shipObject, isHorizontal, map){
     const length = shipObject.length;
-    if (isHorizontal == "true"){
+    if (isHorizontal !== "true"){
       for (let i=0; i<length; i++){
         if (typeof map[x+i] !== "undefined" && typeof map[x+i][y] !== "undefined"){
           for (let ship of map[x+i][y]){
