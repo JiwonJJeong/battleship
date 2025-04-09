@@ -113,6 +113,7 @@ const Gameboard = function () {
       }
     }
     console.log("allowed position map created")
+    console.log(allowedPositionMap);
     return allowedPositionMap;
   };
 
@@ -120,14 +121,22 @@ const Gameboard = function () {
     const length = shipObject.length;
     if (isHorizontal == "true"){
       for (let i=0; i<length; i++){
-        if (typeof map[x+i] !== "undefined" && typeof map[x+i][y] !== "undefined" && map[x+i][y] != shipObject){
-          return false;
+        if (typeof map[x+i] !== "undefined" && typeof map[x+i][y] !== "undefined"){
+          for (let ship of map[x+i][y]){
+            if (ship != shipObject){
+              return false;
+            }
+          }
         }
       }
     } else {
       for (let i=0; i<length; i++){
-        if (typeof map[x] !== "undefined" && typeof map[x][y+i] !== "undefined" && map[x][y+i] != shipObject){
-          return false;
+        if (typeof map[x] !== "undefined" && typeof map[x][y+i] !== "undefined"){
+          for (let ship of map[x][y+i]){
+            if (ship != shipObject){
+              return false;
+            }
+          }
         }
       }
     }
@@ -141,32 +150,43 @@ const Gameboard = function () {
       for (let j=0; j<10; j++){
         if (typeof boardMap[i][j] !== "undefined"){
           const ship = boardMap[i][j];
-          adjacencyMap[i][j] = ship;
+          addToAdjacencyMap(adjacencyMap, ship, i,j);
           if (j>0){
-            adjacencyMap[i][j-1]=ship;
+            addToAdjacencyMap(adjacencyMap, ship, i,j-1);
             if (i>0){
-              adjacencyMap[i-1][j-1]=ship;
+              addToAdjacencyMap(adjacencyMap, ship, i-1,j-1);
             } if (i<9){
-              adjacencyMap[i+1][j-1] = ship;
+              addToAdjacencyMap(adjacencyMap, ship, i+1,j-1);
             }
           }
           if (j<9){
-            adjacencyMap[i][j+1] = ship;
+            addToAdjacencyMap(adjacencyMap, ship, i,j+1);
             if (i>0){
-              adjacencyMap[i-1][j+1]=ship;
+              addToAdjacencyMap(adjacencyMap, ship, i-1,j+1);
             } if (i<9){
-              adjacencyMap[i+1][j+1] = ship;
+              addToAdjacencyMap(adjacencyMap, ship, i+1,j+1);
             }
           }
           if (i>0){
-            adjacencyMap[i-1][j] = ship;
+            addToAdjacencyMap(adjacencyMap, ship, i-1,j);
           } if (i<9){
-            adjacencyMap[i+1][j]=ship;
+            addToAdjacencyMap(adjacencyMap, ship, i+1,j);
           }
         }
       }
     }
+    console.log(adjacencyMap);
     return adjacencyMap;
+  }
+
+  const addToAdjacencyMap = function(map, ship, i, j){
+    const location = map[i][j];
+    if (typeof location !== "undefined" && location[0] != ship){
+      map[i][j].push(ship);
+    }
+    else{
+      map[i][j] = [ship];
+    }
   }
 
   const moveShip = function(ship,[startX,startY],length, isHorizontal){

@@ -130,7 +130,7 @@ const GameManager = function(){
     const renderDraggableShipsToStage = function(player){
         addNewShipWithDragging(player,[0,0],[0,1])
         addNewShipWithDragging(player,[3,3],[4,3],[5,3]);
-        addNewShipWithDragging(player,[7,6],[8,6],[9,6]);
+        addNewShipWithDragging(player,[7,7],[8,7],[9,7]);
         addNewShipWithDragging(player,[0,3], [0,4],[0,5],[0,6]);
         addNewShipWithDragging(player,[5,5], [6,5],[7,5],[8,5],[9,5]);
     }
@@ -194,13 +194,13 @@ const GameManager = function(){
             const squares = row.children;
             for (let j=0; j<10; j++){
                 const square = squares[j];
-                console.log(`${player.gameboard.isThisAllowedPlacement([i,j])}`)
+                //console.log(`${player.gameboard.isThisAllowedPlacement([i,j])}`)
                 if (player.gameboard.isThisAllowedPlacement([i,j])){
                     square.addEventListener("dragover", ondragoverHandler);
-                    console.log(`dragover allowed on [${i}, ${j}]`)
+                    //console.log(`dragover allowed on [${i}, ${j}]`)
                 } else{
                     square.removeEventListener("dragover", ondragoverHandler);
-                    console.log(`dragover not allowed on [${i}, ${j}]`)
+                    //console.log(`dragover not allowed on [${i}, ${j}]`)
                 }
             }
         }
