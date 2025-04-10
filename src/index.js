@@ -149,22 +149,20 @@ const GameManager = function(){
     }
 
     // target is <div col=""> (eg: square)
-    let startRow;
-    let startCol;
-    let isHorizontal;
-    let shipLength;
-    let grabLocation;
     const dragstartHandler = function(event){
         console.log("drag event triggered");
         const target = event.target;
-        shipLength = Number(target.getAttribute("length"));
-        event.dataTransfer.setData("shipLength", length);
-        grabLocation = Number(target.getAttribute("grablocation"));
+        let shipLength = Number(target.getAttribute("length"));
+        event.dataTransfer.setData("shipLength", shipLength);
+        let grabLocation = Number(target.getAttribute("grablocation"));
         event.dataTransfer.setData("grabLocation", grabLocation);
         event.dataTransfer.setData("horizontal", target.getAttribute("horizontal"));
-        startRow = Number(target.parentNode.getAttribute("row"));
-        startCol = Number(target.getAttribute("col"));
-        isHorizontal = target.getAttribute("horizontal");
+        let startRow = Number(target.parentNode.getAttribute("row"));
+        let startCol = Number(target.getAttribute("col"));
+        let isHorizontal = target.getAttribute("horizontal");
+        event.dataTransfer.setData("startRow", startRow);
+        event.dataTransfer.setData("startCol", startCol);
+        event.dataTransfer.setData("isHorizontal", isHorizontal)
         const widthOfDiv = 20;
         const widthOfGap = 1;
         // if grablocation = 0, don't add anything
@@ -181,7 +179,7 @@ const GameManager = function(){
         } else{
             playerVar = players.player2;
         }
-        event.dataTransfer.setData("playerObject", playerVar);
+        event.dataTransfer.setData("playernum", playerNum);
         const shipObject = playerVar.gameboard.getShipFromCoords([startRow, startCol]);
         playerVar.gameboard.createAllowedPositionMap(shipObject, isHorizontal);
         activateOndragover(playerVar);
@@ -224,25 +222,30 @@ const GameManager = function(){
         const row = Number(ev.target.parentNode.getAttribute("row"));
         const col = Number(ev.target.getAttribute("col"));
         let newStartRow = row;
-        let oldStartRow = startRow;
+        let oldStartRow = Number(ev.dataTransfer.getData("startRow"));
         let newStartCol = col;
-        let oldStartCol = startCol;
+        let oldStartCol = Number(ev.dataTransfer.getData("startCol"));
+        const grabLocation = Number(ev.dataTransfer.getData("grabLocation"));
+        const isHorizontal = ev.dataTransfer.getData("isHorizontal");
         if (isHorizontal == "true"){
-            newStartCol = col - grabLocation;
-            oldStartCol = startCol - grabLocation;
+            newStartCol -= grabLocation;
+            oldStartCol -= grabLocation;
         } else{
-            newStartRow = row - grabLocation;
-            oldStartRow = startRow - grabLocation;
+            newStartRow -= grabLocation;
+            oldStartRow -= grabLocation;
         }
-        const playerNum = ev.target.parentNode.parentNode.getAttribute("playernum");
+        const playerNum = ev.dataTransfer.getData("playernum");
         let player;
-        if (playerNum == 1){
+        if (playerNum ==1){
             player = players.player1;
         } else{
             player = players.player2;
         }
+        const shipLength = Number(ev.dataTransfer.getData("shipLength"));
         player.gameboard.moveShip(player.gameboard.getShipFromCoords([oldStartRow,oldStartCol]),
         [newStartRow,newStartCol], shipLength, isHorizontal);
+        RenderManager.renderMoveShip([oldStartRow,oldStartCol],
+        [newStartRow,newStartCol], shipLength, isHorizontal, player.boardDOM);
     }
 
     const shortSleep = function(){
