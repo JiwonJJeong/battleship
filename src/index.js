@@ -117,7 +117,7 @@ const GameManager = function(){
         RenderManager.renderShipSamples();
         const board1 = players.player1.boardDOM;
         renderDraggableShipsToStage(players.player1);
-        activateDropHandler(players.player1.boardDOM);
+        activateDropAndDragStartHandler(players.player1.boardDOM);
         // activateDropEvent(board1);
             // should allow dragover divs
             // on drop, first render overlaps as red!
@@ -137,14 +137,13 @@ const GameManager = function(){
 
     const addNewShipWithDragging = function(player, ...coords){
         addNewShip(player, ...coords);
-        activateDragHandler(player.boardDOM, ...coords);
+        setSpecificDraggable(player.boardDOM, ...coords);
     }
 
-    const activateDragHandler = function(boardDOM, ...coords){
+    const setSpecificDraggable = function(boardDOM, ...coords){
         for (let [x,y] of coords){
             const square = boardDOM.querySelector(`.row-${x} div:nth-child(${y+1})`);
             square.setAttribute("draggable", true);
-            square.addEventListener("dragstart", dragstartHandler);
         }
     }
 
@@ -204,10 +203,11 @@ const GameManager = function(){
         }
     }
 
-    const activateDropHandler = function(playerBoard){
+    const activateDropAndDragStartHandler = function(playerBoard){
         for (let row of playerBoard.children){
             for (let col of row.children){
                 col.addEventListener("drop", dropHandler);
+                col.addEventListener("dragstart", dragstartHandler);
             }
         }
     }
@@ -242,8 +242,10 @@ const GameManager = function(){
             player = players.player2;
         }
         const shipLength = Number(ev.dataTransfer.getData("shipLength"));
+        // change the gameboard data
         player.gameboard.moveShip(player.gameboard.getShipFromCoords([oldStartRow,oldStartCol]),
         [newStartRow,newStartCol], shipLength, isHorizontal);
+        // render changes and also manages draggable
         RenderManager.renderMoveShip([oldStartRow,oldStartCol],
         [newStartRow,newStartCol], shipLength, isHorizontal, player.boardDOM);
     }

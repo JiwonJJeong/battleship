@@ -202,11 +202,11 @@ const Gameboard = function () {
     const coords = [];
     if (isHorizontal == "true"){
       for (let i=0; i<length; i++){
-        coords.push([startR+i,startC])
+        coords.push([startR,startC+i])
       }
     } else {
       for (let i=0; i<length; i++){
-        coords.push([startR,startC+i])
+        coords.push([startR+i,startC])
       }
     }
     console.log(...coords, length);
