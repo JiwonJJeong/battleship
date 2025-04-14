@@ -190,15 +190,17 @@ const Gameboard = function () {
     }
   }
 
-  // remember that map is sorted by r, then c. And "r-direction" is column!
+  // remember that map is sorted by r, then c.
   const moveShip = function(ship,[startR,startC],length, isHorizontal){
-    for (let row of attackMap){
-      for (let col of Object.values(row)){
-        if (col == ship){
-          col = null;
+    for (let row=0; row<10; row++){
+      const mapRow = boardMap[row];
+      for (let col of Object.keys(mapRow)){
+        if (mapRow[col] == ship){
+          delete boardMap[row][col];
         }
       }
     }
+    console.log(boardMap);
     const coords = [];
     if (isHorizontal == "true"){
       for (let i=0; i<length; i++){
