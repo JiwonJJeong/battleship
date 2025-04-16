@@ -88,17 +88,18 @@ const Gameboard = function () {
 
   let allowedPositionMap;
   // uses adjacency map and ship length to show all posible topleft positions for the ship
-  const createAllowedPositionMap = function(shipObject, isHorizontal){
+  // recall that grabLocation starts at 0
+  const createAllowedPositionMap = function(shipObject, isHorizontal, grabLocation){
     const adjacencyMap = createAdjacencyMap();
     allowedPositionMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
     const length = shipObject.length;
     if (isHorizontal == "true"){
       for (let r = 0; r<10; r++){
         for (let c=0; c<10; c++){
-          if (c> (10-length)){
+          if (c> (10-length+grabLocation) || c<grabLocation){
             allowedPositionMap[r][c] = false;
-          } else{
-            allowedPositionMap[r][c] = isShipFitAdjacency([r,c], shipObject, isHorizontal, adjacencyMap);
+          } else {
+            allowedPositionMap[r][c] = isShipFitAdjacency([r,c-grabLocation], shipObject, isHorizontal, adjacencyMap);
           } 
         }
       }
@@ -108,7 +109,7 @@ const Gameboard = function () {
           if (c > (10-length)){
               allowedPositionMap[r][c] = false;
           } else {
-            allowedPositionMap[r][c] = isShipFitAdjacency([r,c],shipObject, isHorizontal, adjacencyMap);
+            allowedPositionMap[r][c] = isShipFitAdjacency([r-grabLocation,c],shipObject, isHorizontal, adjacencyMap);
           }
         }
       }
@@ -118,6 +119,7 @@ const Gameboard = function () {
     return allowedPositionMap;
   };
 
+  // [r,c] is topleft square of ship
   const isShipFitAdjacency = function([r,c],shipObject, isHorizontal, map){
     const length = shipObject.length;
     if (isHorizontal !== "true"){

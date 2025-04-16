@@ -180,7 +180,7 @@ const GameManager = function(){
         }
         event.dataTransfer.setData("playernum", playerNum);
         const shipObject = playerVar.gameboard.getShipFromCoords([startRow, startCol]);
-        playerVar.gameboard.createAllowedPositionMap(shipObject, isHorizontal);
+        playerVar.gameboard.createAllowedPositionMap(shipObject, isHorizontal, grabLocation);
         activateOndragover(playerVar);
     }
 
