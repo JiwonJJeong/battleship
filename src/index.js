@@ -167,9 +167,17 @@ const GameManager = function(){
         // if grablocation = 0, don't add anything
         // if grablocation = 1, add 1 gap and 1 div
         // if grablocation = 2, add 2 gaps and 2 divs
-        const addOffsetX = (grabLocation * (widthOfDiv+widthOfGap));
-        const dragImageNode = document.querySelector(`.hidden.samples .ships.horizontal #length-${shipLength}`);
-        event.dataTransfer.setDragImage(dragImageNode,event.offsetX + addOffsetX,event.offsetY);
+        let addOffsetX = 0;
+        let addOffsetY = 0;
+        let dragImageNode;
+        if (isHorizontal == "true"){
+            dragImageNode = document.querySelector(`.hidden.samples .ships.horizontal #length-${shipLength}`);
+            addOffsetX = (grabLocation * (widthOfDiv+widthOfGap));
+        } else{
+            dragImageNode = document.querySelector(`.hidden.samples .ships.vertical #length-${shipLength}`);
+            addOffsetY = (grabLocation * (widthOfDiv+widthOfGap))
+        }
+        event.dataTransfer.setDragImage(dragImageNode,event.offsetX + addOffsetX,event.offsetY+addOffsetY);
         // dynamically allow where we can drop with ondragover attribute
         const playerNum = target.parentNode.parentNode.getAttribute("playernum");
         let playerVar;

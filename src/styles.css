@@ -35,23 +35,29 @@
 }
 
 /* style ships off board during staging */
-.hidden.samples > div{
-    display: flex;
-    gap: 3px;
-    flex-direction: column;
-
+.hidden.samples{
     > div{
-        background-color: black;
-        width: min-content;
         display: flex;
-        flex-direction: row;
-        gap: 1px;
+        gap: 3px;
+        flex-direction: column;
 
-        div{
-            aspect-ratio: 1/1;
-            height: 20px;
-            background-color:aqua;
+        > div{
+            background-color: black;
+            width: min-content;
+            display: flex;
+            flex-direction: row;
+            gap: 1px;
+        
+            div{
+                aspect-ratio: 1/1;
+                height: 20px;
+                background-color:aqua;
+            }
         }
+    }
+
+    .vertical > div{
+        flex-direction: column;
     }
 }
 
