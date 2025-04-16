@@ -188,14 +188,14 @@ const RenderManager = function(){
             }
         } else{
             for (let i=0; i<shipLength; i++){
-                const squareToRemove = boardDOMNode.querySelector(`.row-${oldXStart-i} .div:nth-child(${oldYStart+1})`);
+                const squareToRemove = boardDOMNode.querySelector(`.row-${oldXStart+i} div:nth-child(${oldYStart+1})`);
                 const grablocation = squareToRemove.getAttribute("grablocation");
                 squareToRemove.removeAttribute("draggable");
                 squareToRemove.removeAttribute("length");
                 squareToRemove.removeAttribute("grablocation");
                 squareToRemove.removeAttribute("horizontal");
                 squareToRemove.classList.remove("ship")
-                const squareToAdd = boardDOMNode.querySelector(`.row-${newXStart-i} .div:nth-child(${newYStart+1})`);
+                const squareToAdd = boardDOMNode.querySelector(`.row-${newXStart+i} div:nth-child(${newYStart+1})`);
                 squareToAdd.setAttribute("draggable", true);
                 squareToAdd.setAttribute("length", shipLength);
                 squareToAdd.setAttribute("grablocation", grablocation);
