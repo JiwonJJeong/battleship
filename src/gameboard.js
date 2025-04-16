@@ -106,7 +106,7 @@ const Gameboard = function () {
      } else{
       for (let r = 0; r<10; r++){
         for (let c=0; c<10; c++){
-          if (c > (10-length)){
+          if (r > (10-length+grabLocation) || r<grabLocation){
               allowedPositionMap[r][c] = false;
           } else {
             allowedPositionMap[r][c] = isShipFitAdjacency([r-grabLocation,c],shipObject, isHorizontal, adjacencyMap);

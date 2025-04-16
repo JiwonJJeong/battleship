@@ -43,18 +43,22 @@ test('reports if all ships are sunk', () => {
     expect(testBoard.isAllSunk()).toBe(true);
 })
 
-test('coords adjacent flagged NOT allowed for horizontal', () => {
+test('coords adjacent flagged NOT allowed for vertical', () => {
     testBoard.newShip([7,4],[8,4],[9,4]);
     const shipToTest = testBoard.getShipFromCoords([7,4]);
-    testBoard.createAllowedPositionMap(shipToTest, "true");
+    testBoard.createAllowedPositionMap(shipToTest, "false",0);
     expect(testBoard.isThisAllowedPlacement([2,2])).toBe(false);
 })
 
-test('coords adjacent flagged NOT allowed for vertical', () => {
+test('coords adjacent flagged NOT allowed for horizontal', () => {
     testBoard.newShip([0,1],[0,2],[0,3],[0,4],[0,5]);
     const shipToTest = testBoard.getShipFromCoords([0,1]);
-    testBoard.createAllowedPositionMap(shipToTest, "false");
+    testBoard.createAllowedPositionMap(shipToTest, "true",0);
     expect(testBoard.isThisAllowedPlacement([8,5])).toBe(false);
+})
+
+test('entire ship is considered in adjacency check', () => {
+    expect(testBoard.isThisAllowedPlacement([7,0])).toBe(false);
 })
 
 test('out of bounds flagged NOT allowed', () => {
@@ -67,6 +71,19 @@ test('does not flag adjacency to self', () => {
 
 test('does not flag non adjacencies', () => {
     const shipToTest = testBoard.getShipFromCoords([0,1]);
-    console.log(testBoard.createAllowedPositionMap(shipToTest, "false"));
+    testBoard.createAllowedPositionMap(shipToTest, "true",0);
     expect(testBoard.isThisAllowedPlacement([4,2])).toBe(true);
+})
+
+test('non-zero grab positions properly flags bounds', () => {
+    const shipToTest = testBoard.getShipFromCoords([0,1]);
+    testBoard.createAllowedPositionMap(shipToTest, "true",1);
+    expect(testBoard.isThisAllowedPlacement([0,0])).toBe(false);
+    expect(testBoard.isThisAllowedPlacement([0,6])).toBe(true);
+})
+
+test('non-zero grab positions properly flags adjacencies', () => {
+    const shipToTest = testBoard.getShipFromCoords([2,3]);
+    testBoard.createAllowedPositionMap(shipToTest, "true",2);
+    expect(testBoard.isThisAllowedPlacement([0,7])).toBe(false);
 })
