@@ -122,6 +122,11 @@ const RenderManager = function(){
     const renderStaging = function(attackMap1, shipMap1, attackMap2, shipMap2){
         renderBoardReset(attackMap1, shipMap1, board1);
         renderBoardReset(attackMap2, shipMap2, board2);
+        renderShipSamples();
+    }
+
+    const toggleBoardVisibility = function(boardDOM){
+        boardDOM.classList.toggle("visible");
     }
 
     const renderBoardReset = function(attackMap, shipMap, boardDOM){
@@ -164,6 +169,12 @@ const RenderManager = function(){
             container.append(part);
         }
         return container;
+    }
+
+    const renderStagingButtons = function(boardDOM){
+        const button = createElement("button","submit staging");
+        button.textContent = "Lock in positions!";
+        boardDOM.parentNode.append(button);
     }
 
     const renderMoveShip = function([oldXStart, oldYStart], [newXStart, newYStart], shipLength, isHorizontal, boardDOMNode){
@@ -222,6 +233,8 @@ const RenderManager = function(){
         renderStaging,
         renderShipSamples,
         renderMoveShip,
+        renderStagingButtons,
+        toggleBoardVisibility,
     }
 
 }();

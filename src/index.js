@@ -49,12 +49,8 @@ const GameManager = function(){
 
     const initPlay = function(){
         // assign event listener for attacks
-        const board1 = document.querySelector(".board-and-header.player-1 .board.container");
-        const board2 = document.querySelector(".board-and-header.player-2 .board.container");
-        players.player1.boardDOM = board1;
-        players.player2.boardDOM = board2;
         // later make first turn random or chosen
-        board2.classList.add("visible");
+        players.player2.boardDOM.classList.add("visible");
         passTurnTo(1);
         const dialog = document.querySelector("dialog");
         dialog.close();
@@ -66,24 +62,17 @@ const GameManager = function(){
         const player1 = new humanPlayer("Amy", 1);
         const player2 = new humanPlayer("Bart", 2);
         RenderManager.initGameRender(player1, player2);
+        const board1 = document.querySelector(".board-and-header.player-1 .board.container");
+        const board2 = document.querySelector(".board-and-header.player-2 .board.container");
+        player1.boardDOM = board1;
+        player2.boardDOM = board2;
         // each player has 5 ships of size 2, 3, 3, 4, 5
-        // enterGameStaging();
-        addNewShip(player1,[0,0],[0,1])
-        addNewShip(player1,[3,3],[4,3],[5,3]);
-        addNewShip(player1,[7,6],[8,6],[9,6]);
-        addNewShip(player1,[0,3], [0,4],[0,5],[0,6]);
-        addNewShip(player1,[5,5], [6,5],[7,5],[8,5],[9,5]);
-        addNewShip(player2,[7,7],[7,8]);
-        addNewShip(player2,[3,3],[4,3],[5,3]);
-        addNewShip(player2,[7,6],[8,6],[9,6]);
-        addNewShip(player2,[0,3], [0,4],[0,5],[0,6]);
-        addNewShip(player2,[5,5], [6,5],[7,5],[8,5],[9,5]);
         players = {player1, player2};
-        initPlay();
+        enterGameStaging();
         //just for testing!
         const header = document.querySelector(".ui.container");
         header.addEventListener("click", () => endGame(1))
-    }();
+    };
 
     // player with playerNumber lost
     const endGame = function(playerNumber){
@@ -103,6 +92,7 @@ const GameManager = function(){
         replayButton.addEventListener("click", enterGameStaging);
     }
 
+    // START OF CODE RELATED TO GAME STAGING
     const enterGameStaging = function(){
         // activate drag and drop of ships to choose ship location using HTML drag and drop API!
         console.log("Entering new game staging!")
@@ -114,17 +104,17 @@ const GameManager = function(){
         );
         players.player1.gameboard.resetBoard();
         players.player2.gameboard.resetBoard();
-        RenderManager.renderShipSamples();
-        const board1 = players.player1.boardDOM;
-        renderDraggableShipsToStage(players.player1);
-        activateDropAndDragStartHandler(players.player1.boardDOM);
-        // activateDropEvent(board1);
-            // should allow dragover divs
-            // on drop, first render overlaps as red!
-            // and on drop should calculate which square it is dropped at and info passed to from drag handler to store coordinates in gameboard
-        // break screen
-            // only allow if positions are valid and all filled
+        activateStaging(players.player1)
         // repeat for board 2
+    }
+
+    const activateStaging = function(player){
+        const board1 = player.boardDOM;
+        RenderManager.toggleBoardVisibility(board1);
+        renderDraggableShipsToStage(player);
+        activateDropAndDragStartHandler(board1);
+        RenderManager.renderStagingButtons(board1);
+        activateStagingButtons(board1);
     }
 
     const renderDraggableShipsToStage = function(player){
@@ -144,6 +134,38 @@ const GameManager = function(){
         for (let [x,y] of coords){
             const square = boardDOM.querySelector(`.row-${x} div:nth-child(${y+1})`);
             square.setAttribute("draggable", true);
+        }
+    }
+
+    const activateStagingButtons = function(boardDOM){
+        const button = boardDOM.nextElementSibling;
+        button.addEventListener("click", () => completeStaging(boardDOM))
+    }
+
+    const completeStaging = function(boardDOM){
+        deactivateStaging(boardDOM);
+        //breakScreen
+        if (boardDOM.getAttribute("playernum") == "1"){
+            activateStaging(players.player2);
+        } else{
+            initPlay();
+        }
+    }
+
+    const deactivateStaging = function(boardDOM){
+        RenderManager.toggleBoardVisibility(boardDOM);
+        const button = boardDOM.nextElementSibling;
+        button.parentNode.removeChild(button);
+        const rows = boardDOM.children;
+        for (let i=0; i<10; i++){
+            const row = rows[i];
+            const squares = row.children;
+            for (let j=0; j<10; j++){
+                const square = squares[j];
+                square.removeEventListener("dragover", ondragoverHandler);
+                square.removeEventListener("drop", dropHandler);
+                square.removeEventListener("dragstart", dragstartHandler);
+            }
         }
     }
 
@@ -257,10 +279,15 @@ const GameManager = function(){
         RenderManager.renderMoveShip([oldStartRow,oldStartCol],
         [newStartRow,newStartCol], shipLength, isHorizontal, player.boardDOM);
     }
+    // END OF CODE RELATED TO STAGING
 
     const shortSleep = function(){
         return new Promise(resolve => setTimeout(resolve, 1000));
     }
+
+
+    // DRIVER CODE
+    initGame();
 
     return{
         players,
