@@ -1,4 +1,25 @@
+body{
+    display:grid;
+    grid-template-rows: 100px 1fr 10px;
+    grid-template-columns: 1fr 1fr;
 
+    /* grid area is r / c / r / c */
+    .ui.container{
+        grid-area: 1 / 1 / 2 / 3;
+    }
+
+    .board.container.player-1{
+        grid-area: 2 / 1 / 3 / 2;
+    }
+
+    .board.container.player-2{
+        grid-area: 2 / 2 / 3 / 3;
+    }
+
+    .hidden.samples{
+        grid-area: 3 / 1 / 4 / 3;
+    }
+}
 
 .board.container{
     display: flex;
