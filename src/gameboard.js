@@ -33,6 +33,7 @@ const Gameboard = function () {
         if (c < 10 && c >=0){
           boardMap[r][c] = newShip;
         } else{
+          console.log(coords);
           throw new Error(`Bad col input for newShip(): ${coords}`);
         }
       }
@@ -89,10 +90,12 @@ const Gameboard = function () {
   let allowedPositionMap;
   // uses adjacency map and ship length to show all posible topleft positions for the ship
   // recall that grabLocation starts at 0
+  // returns number of trues (allowed spots)
   const createAllowedPositionMap = function(shipObject, isHorizontal, grabLocation){
     const adjacencyMap = createAdjacencyMap();
     allowedPositionMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
     const length = shipObject.length;
+    let trueCount =0;
     if (isHorizontal == "true"){
       for (let r = 0; r<10; r++){
         for (let c=0; c<10; c++){
@@ -100,6 +103,9 @@ const Gameboard = function () {
             allowedPositionMap[r][c] = false;
           } else {
             allowedPositionMap[r][c] = isShipFitAdjacency([r,c-grabLocation], shipObject, isHorizontal, adjacencyMap);
+            if (allowedPositionMap[r][c] == true){
+              trueCount++;
+            }
           } 
         }
       }
@@ -110,13 +116,16 @@ const Gameboard = function () {
               allowedPositionMap[r][c] = false;
           } else {
             allowedPositionMap[r][c] = isShipFitAdjacency([r-grabLocation,c],shipObject, isHorizontal, adjacencyMap);
+            if (allowedPositionMap[r][c] == true){
+              trueCount++;
+            }
           }
         }
       }
     }
     console.log("allowed position map created")
     console.log(allowedPositionMap);
-    return allowedPositionMap;
+    return trueCount;
   };
 
   // [r,c] is topleft square of ship
@@ -217,6 +226,60 @@ const Gameboard = function () {
     newShip(...coords);
   }
 
+  // need to randomize 5 ships of length 2,3,3,4,5
+  const randomizeBoard = function(){
+    resetBoard();
+    newShip(...getRandomCoords(2));
+    newShip(...getRandomCoords(3));
+    newShip(...getRandomCoords(3));
+    newShip(...getRandomCoords(4));
+    newShip(...getRandomCoords(5));
+    console.log(boardMap);
+  }
+
+  const getRandomCoords = function(length){
+    const isHorizontal = randomizeIsHorizontal();
+    const ship = new Ship(length);
+    const trueCount = createAllowedPositionMap(ship, isHorizontal, 0);
+    let rngCount = Math.floor(Math.random()*trueCount);
+    let r=0;
+    let c=0;
+    while (rngCount>=0){
+      if (isThisAllowedPlacement([r,c]) == true){
+        rngCount--;
+      };
+      if (c==9){
+        r++;
+        c=0;
+      } else{
+        c++;
+      }
+    }
+    let coords = [];
+    if (isHorizontal == "true"){
+      for (;length>0; length--){
+        coords.push([r,c]);
+        c++;
+      }
+    } else{
+      for (;length>0; length--){
+        coords.push([r,c]);
+        r++;
+      }
+    }
+    console.log(`Generated allowed random coords ${coords}`);
+    return (coords);
+  }
+
+  const randomizeIsHorizontal = function(){
+    const rng = Math.random()*2;
+    if (rng < 1){
+      return "true";
+    } else {
+      return "false";
+    }
+  }
+
   return {
     newShip,
     getShipFromCoords,
@@ -229,6 +292,7 @@ const Gameboard = function () {
     isThisAllowedPlacement,
     moveShip,
     createAllowedPositionMap,
+    randomizeBoard,
   };
 };
 

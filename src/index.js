@@ -114,7 +114,7 @@ const GameManager = function(){
         renderDraggableShipsToStage(player);
         activateDropAndDragStartHandler(board1);
         RenderManager.renderStagingButtons(board1);
-        activateStagingButtons(board1);
+        activateStagingButtons(player);
     }
 
     const renderDraggableShipsToStage = function(player){
@@ -137,9 +137,16 @@ const GameManager = function(){
         }
     }
 
-    const activateStagingButtons = function(boardDOM){
+    const activateStagingButtons = function(player){
+        const boardDOM = player.boardDOM;
         const button = boardDOM.nextElementSibling;
         button.addEventListener("click", () => completeStaging(boardDOM))
+        const rngButton = button.nextElementSibling;
+        rngButton.addEventListener("click", () => randomizeBoard(player));
+    }
+
+    const randomizeBoard = function(player){
+        player.gameboard.randomizeBoard();
     }
 
     const completeStaging = function(boardDOM){

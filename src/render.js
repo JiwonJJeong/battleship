@@ -174,7 +174,9 @@ const RenderManager = function(){
     const renderStagingButtons = function(boardDOM){
         const button = createElement("button","submit staging");
         button.textContent = "Lock in positions!";
-        boardDOM.parentNode.append(button);
+        const rngButton = createElement("button", "randomize button");
+        rngButton.textContent = "Randomize"
+        boardDOM.parentNode.append(button, rngButton);
     }
 
     const renderMoveShip = function([oldXStart, oldYStart], [newXStart, newYStart], shipLength, isHorizontal, boardDOMNode){
