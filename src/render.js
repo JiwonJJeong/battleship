@@ -120,8 +120,8 @@ const RenderManager = function(){
     }
 
     const renderStaging = function(attackMap1, shipMap1, attackMap2, shipMap2){
-        renderBoardReset(attackMap1, shipMap1, board1);
-        renderBoardReset(attackMap2, shipMap2, board2);
+        renderBoardReset(attackMap1, shipMap1, board1.querySelector(".board.container"));
+        renderBoardReset(attackMap2, shipMap2, board2.querySelector(".board.container"));
         renderShipSamples();
     }
 
@@ -130,20 +130,23 @@ const RenderManager = function(){
     }
 
     const renderBoardReset = function(attackMap, shipMap, boardDOM){
-        const board = boardDOM.querySelector(".board.container");
-        for (let i=0; i<attackMap.length; i++){
+        for (let i=0; i<10; i++){
             const row = i;
             const attackedInRow = Object.keys(attackMap[i]);
             const shipInRow = Object.keys(shipMap[i]);
             for (let attacked of attackedInRow){
                 const col = Number(attacked)+1;
-                const divToUnattack = board.querySelector(`div.row-${row} div:nth-child(${col})`);
+                const divToUnattack = boardDOM.querySelector(`div.row-${row} div:nth-child(${col})`);
                 divToUnattack.classList.remove("attacked")
             }
             for (let ship of shipInRow){
                 const col = Number(ship)+1;
-                const divToUnship = board.querySelector(`div.row-${row} div:nth-child(${col})`);
-                divToUnship.classList.remove("ship")
+                const divToUnship = boardDOM.querySelector(`div.row-${row} div:nth-child(${col})`);
+                divToUnship.classList.remove("ship");
+                divToUnship.removeAttribute("draggable");
+                divToUnship.removeAttribute("grablocation");
+                divToUnship.removeAttribute("length");
+                divToUnship.removeAttribute("horizontal");
             }
         }
     }
@@ -237,6 +240,7 @@ const RenderManager = function(){
         renderMoveShip,
         renderStagingButtons,
         toggleBoardVisibility,
+        renderBoardReset,
     }
 
 }();

@@ -146,7 +146,14 @@ const GameManager = function(){
     }
 
     const randomizeBoard = function(player){
-        player.gameboard.randomizeBoard();
+        RenderManager.renderBoardReset(player.gameboard.getAttackMap(),
+        player.gameboard.getBoardMap(), player.boardDOM);
+        const randomCoords = player.gameboard.randomizeBoard();
+        // randomCoords is {coords1, coords2, ... coords5} where each coords is an array of [x,y]s
+        for (let coordsArray of Object.values(randomCoords)){
+            RenderManager.renderNewShip(player.number, ...coordsArray);
+            setSpecificDraggable(player.boardDOM, ...coordsArray);
+        }
     }
 
     const completeStaging = function(boardDOM){
@@ -172,6 +179,7 @@ const GameManager = function(){
                 square.removeEventListener("dragover", ondragoverHandler);
                 square.removeEventListener("drop", dropHandler);
                 square.removeEventListener("dragstart", dragstartHandler);
+                square.removeAttribute("draggable");
             }
         }
     }

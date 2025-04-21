@@ -229,12 +229,18 @@ const Gameboard = function () {
   // need to randomize 5 ships of length 2,3,3,4,5
   const randomizeBoard = function(){
     resetBoard();
-    newShip(...getRandomCoords(2));
-    newShip(...getRandomCoords(3));
-    newShip(...getRandomCoords(3));
-    newShip(...getRandomCoords(4));
-    newShip(...getRandomCoords(5));
+    const coords1 = getRandomCoords(2);
+    newShip(...coords1);
+    const coords2 = getRandomCoords(3);
+    newShip(...coords2);
+    const coords3 = getRandomCoords(3);
+    newShip(...coords3);
+    const coords4 = getRandomCoords(4);
+    newShip(...coords4);
+    const coords5 = getRandomCoords(5);
+    newShip(...coords5);
     console.log(boardMap);
+    return {coords1,coords2,coords3,coords4,coords5};
   }
 
   const getRandomCoords = function(length){
