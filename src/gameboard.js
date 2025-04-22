@@ -251,15 +251,15 @@ const Gameboard = function () {
     let r=0;
     let c=0;
     while (rngCount>=0){
-      if (isThisAllowedPlacement([r,c]) == true){
-        rngCount--;
-      };
       if (c==9){
         r++;
         c=0;
       } else{
         c++;
       }
+      if (isThisAllowedPlacement([r,c]) == true){
+        rngCount--;
+      };
     }
     let coords = [];
     if (isHorizontal == "true"){
