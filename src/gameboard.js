@@ -228,28 +228,38 @@ const Gameboard = function () {
 
   // need to randomize 5 ships of length 2,3,3,4,5
   const randomizeBoard = function(){
-    resetBoard();
-    const coords1 = getRandomCoords(2);
-    newShip(...coords1);
-    const coords2 = getRandomCoords(3);
-    newShip(...coords2);
-    const coords3 = getRandomCoords(3);
-    newShip(...coords3);
-    const coords4 = getRandomCoords(4);
-    newShip(...coords4);
-    const coords5 = getRandomCoords(5);
-    newShip(...coords5);
-    console.log(boardMap);
-    return {coords1,coords2,coords3,coords4,coords5};
+    try{
+      resetBoard();
+      const coords1 = getRandomCoords(2);
+      newShip(...coords1);
+      const coords2 = getRandomCoords(3);
+      newShip(...coords2);
+      const coords3 = getRandomCoords(3);
+      newShip(...coords3);
+      const coords4 = getRandomCoords(4);
+      newShip(...coords4);
+      const coords5 = getRandomCoords(5);
+      newShip(...coords5);
+      //console.log(boardMap);
+      return {coords1,coords2,coords3,coords4,coords5};
+    } catch{
+      return randomizeBoard();
+    }
   }
 
   const getRandomCoords = function(length){
     const isHorizontal = randomizeIsHorizontal();
     const ship = new Ship(length);
-    const trueCount = createAllowedPositionMap(ship, isHorizontal, 0);
+    let trueCount = createAllowedPositionMap(ship, isHorizontal, 0);
+    // catch when there is no allowed positions
+    if (trueCount == 0){
+      return new Error("Must rerandomize due to unlucky setup");
+    }
+    // rngCount ranges from 0 to trueCount-1;
     let rngCount = Math.floor(Math.random()*trueCount);
-    let r=0;
-    let c=0;
+    //console.log(rngCount, trueCount);
+    let r=-1;
+    let c=9;
     while (rngCount>=0){
       if (c==9){
         r++;
@@ -259,7 +269,8 @@ const Gameboard = function () {
       }
       if (isThisAllowedPlacement([r,c]) == true){
         rngCount--;
-      };
+      }
+      //console.log(r, c, rngCount);
     }
     let coords = [];
     if (isHorizontal == "true"){
