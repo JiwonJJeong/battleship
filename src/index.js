@@ -139,7 +139,7 @@ const GameManager = function(){
 
     const activateStagingButtons = function(player){
         const boardDOM = player.boardDOM;
-        const button = boardDOM.nextElementSibling;
+        const button = boardDOM.nextElementSibling.firstChild;
         button.addEventListener("click", () => completeStaging(boardDOM))
         const rngButton = button.nextElementSibling;
         rngButton.addEventListener("click", () => randomizeBoard(player));
@@ -168,8 +168,8 @@ const GameManager = function(){
 
     const deactivateStaging = function(boardDOM){
         RenderManager.toggleBoardVisibility(boardDOM);
-        const button = boardDOM.nextElementSibling;
-        button.parentNode.removeChild(button);
+        const buttonArea = boardDOM.nextElementSibling;
+        buttonArea.parentNode.removeChild(buttonArea);
         const rows = boardDOM.children;
         for (let i=0; i<10; i++){
             const row = rows[i];
