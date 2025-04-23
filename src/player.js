@@ -14,11 +14,11 @@ const Player = function(name, number){
     }
 }
 
-const computerPlayer = function(name, number){
+const computerPlayer = function(number){
 
     return{
         // inherit properties by composition
-        ...(new Player(name, number)),
+        ...(new Player("Computer Bob", number)),
     }
 }
 

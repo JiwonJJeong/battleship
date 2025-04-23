@@ -80,6 +80,7 @@ const Gameboard = function () {
   const resetBoard = function(){
     boardMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
     attackMap = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+    attackCount = 0;
   }
 
   // USES allowed position map created with specific info about ship orientation and length
@@ -297,6 +298,61 @@ const Gameboard = function () {
     }
   }
 
+  // start of code for guessing educated attack for computer player //
+  let previousAttack;
+  const makeRandomAttack = function(){
+    const randomIndex = Math.floor(Math.random()* attackCount);
+    previousAttack.coords = getNthOpenAttackMap(randomIndex)
+    previousAttack.hit = receiveAttack(previousAttack.coords);
+  }
+
+  let attackCount = 0;
+  const makeEducatedAttack = function(){
+    if (previousAttack.prevSuccessCoords != undefined){
+      const [r,c] = previousAttack.prevSuccessCoords;
+      if (isOnBoardAndNotAttacked([r-1,c])){
+        previousAttack.coords = [r-1,c];
+        previousAttack.hit = receiveAttack([r-1,c]);
+      } else if (isOnBoardAndNotAttacked([r+1,c])){
+        previousAttack.coords = [r+1,c];
+        previousAttack.hit = receiveAttack([r+1,c]);
+      } else if (isOnBoardAndNotAttacked([r,c-1])){
+        previousAttack.coords = [r,c-1];
+        previousAttack.hit = receiveAttack([r,c-1]);
+      } else if (isOnBoardAndNotAttacked([r,c+1])){
+        previousAttack.coords = [r,c+1];
+        previousAttack.hit = receiveAttack([r,c+1]);
+      } else {
+        makeRandomAttack();
+      }
+    } else{
+      makeRandomAttack();
+    }
+    if (previousAttack.hit == "hit"){
+      previousAttack.prevSuccessCoords = previousAttack.coords;
+    }
+    attackCount++;
+  }
+
+  const getNthOpenAttackMap = function(index){
+    for (let row of attackMap){
+      for (let [col, colValue] of Object.entries(row)){
+        if (colValue != "hit" && colValue != "miss"){
+          index--;
+          if (index <0){
+            const r = attackMap.indexOf(row);
+            return [r,col];
+          }
+        }
+      }
+    }
+  }
+
+  const isOnBoardAndNotAttacked = function([r,c]){
+    return (r<9 && r>0 && c<9 && c>0 && attackMap([r,c]) == undefined);
+  }
+  // end of code related to making computer educated attack
+
   return {
     newShip,
     getShipFromCoords,
@@ -310,6 +366,7 @@ const Gameboard = function () {
     moveShip,
     createAllowedPositionMap,
     randomizeBoard,
+    makeEducatedAttack,
   };
 };
 
