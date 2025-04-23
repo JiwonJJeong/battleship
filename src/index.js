@@ -156,13 +156,14 @@ const GameManager = function(){
         }
     }
 
-    const completeStaging = function(boardDOM){
+    const completeStaging = async function(boardDOM){
         deactivateStaging(boardDOM);
-        //breakScreen
         if (boardDOM.getAttribute("playernum") == "1"){
+            RenderManager.revealDialogWithText(`Now let ${players.player2.name} set up.`);
             activateStaging(players.player2);
         } else{
             initPlay();
+            RenderManager.revealDialogWithText(`Let's play! ${players.player1.name} first.`);
         }
     }
 
