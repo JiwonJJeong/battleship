@@ -51,8 +51,8 @@ const GameManager = function(){
 
     const emulateComputerTurn = async function(){
         console.log("Emulating computer's turn")
-        const rngCoords = players.player2.gameboard.makeEducatedAttack(players.player1);
-        const hitTarget = players.player1.boardDOM.querySelector(`.row-${rngCoords[0]} div:nth-child(${rngCoords[1]})`)
+        const [r,c] = players.player2.gameboard.makeEducatedAttack(players.player1);
+        const hitTarget = players.player1.boardDOM.querySelector(`.row-${r} div:nth-child(${c+1})`)
         RenderManager.renderAttacked(hitTarget);
         if (players.player1.gameboard.isAllSunk()){
             await shortSleep();
