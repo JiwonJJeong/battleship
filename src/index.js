@@ -128,7 +128,6 @@ const GameManager = function(){
         players.player1.gameboard.resetBoard();
         players.player2.gameboard.resetBoard();
         activateStaging(players.player1)
-        // repeat for board 2
     }
 
     const activateStaging = function(player){
@@ -189,7 +188,7 @@ const GameManager = function(){
             RenderManager.revealDialogWithText(`Let's play! ${players.player1.name} first.`);
         } else{
             // this case is when it is a single player game
-            players.player2.gameboard.randomizeBoard();
+            randomizeBoard(players.player2);
             initPlay();
             RenderManager.revealDialogWithText(`Let's play! Your turn first.`);
         }
