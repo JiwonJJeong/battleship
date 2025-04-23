@@ -105,16 +105,20 @@ const RenderManager = function(){
         // change board header from "Your Board" to "Enemy Board" and vis versa
         const board1Header = board1.querySelector(".header");
         const board2Header = board2.querySelector(".header");
+        // hide ships from enemy board and reveal ships on your board
+        const boardDOM1 = board1.querySelector(".board.container");
+        const boardDOM2 = board2.querySelector(".board.container");
         if (playerNumber == 1){
             board2Header.textContent = "Enemy Board";
             board1Header.textContent = "Your Board";
+            boardDOM1.classList.add("visible");
+            boardDOM2.classList.remove("visible");
         } else {
             board1Header.textContent = "Enemy Board";
             board2Header.textContent = "Your Board";
+            boardDOM1.classList.remove("visible");
+            boardDOM2.classList.add("visible");
         }
-        // hide ships from enemy board and reveal ships on your board
-        board1.lastChild.classList.toggle("visible");
-        board2.lastChild.classList.toggle("visible");
     }
 
     // render ending game (playerName has won)

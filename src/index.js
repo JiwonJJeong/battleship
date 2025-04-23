@@ -40,10 +40,25 @@ const GameManager = function(){
         RenderManager.renderAttacked(target);
         playerObject.boardDOM.removeEventListener("click", handleBoardClick);
         await shortSleep();
-        if (playerObject.gameboard.isAllSunk()){
+        if (isSinglePlayer){
+            await emulateComputerTurn();
+        } else if (playerObject.gameboard.isAllSunk()){
             endGame(playerNumber);
         } else{
             passTurnTo(playerNumber); // We pass turn to player's board we just clicked
+        }
+    }
+
+    const emulateComputerTurn = async function(){
+        console.log("Emulating computer's turn")
+        const rngCoords = players.player2.gameboard.makeEducatedAttack(players.player1);
+        const hitTarget = players.player1.boardDOM.querySelector(`.row-${rngCoords[0]} div:nth-child(${rngCoords[1]})`)
+        RenderManager.renderAttacked(hitTarget);
+        if (players.player1.gameboard.isAllSunk()){
+            await shortSleep();
+            endGame(1);
+        } else{
+            activateEventListener(players.player2.boardDOM);
         }
     }
 
@@ -58,9 +73,17 @@ const GameManager = function(){
     };
 
     let players;
-    const initGame = function(){
-        const player1 = new humanPlayer("Amy", 1);
-        const player2 = new humanPlayer("Bart", 2);
+    let isSinglePlayer;
+    const initGame = function(player1Name = "Player 1", player2Name = "Player 2"){
+        const player1 = new humanPlayer(player1Name, 1);
+        let player2;
+        if (player2Name == false){
+            player2 = new computerPlayer(2);
+            isSinglePlayer = true;
+        } else{
+            player2 = new humanPlayer(player2Name, 2);
+            isSinglePlayer = false;
+        }
         RenderManager.initGameRender(player1, player2);
         const board1 = document.querySelector(".board-and-header.player-1 .board.container");
         const board2 = document.querySelector(".board-and-header.player-2 .board.container");
@@ -158,12 +181,17 @@ const GameManager = function(){
 
     const completeStaging = async function(boardDOM){
         deactivateStaging(boardDOM);
-        if (boardDOM.getAttribute("playernum") == "1"){
+        if (boardDOM.getAttribute("playernum") == "1" && !isSinglePlayer){
             RenderManager.revealDialogWithText(`Now let ${players.player2.name} set up.`);
             activateStaging(players.player2);
-        } else{
+        } else if (!isSinglePlayer){
             initPlay();
             RenderManager.revealDialogWithText(`Let's play! ${players.player1.name} first.`);
+        } else{
+            // this case is when it is a single player game
+            players.player2.gameboard.randomizeBoard();
+            initPlay();
+            RenderManager.revealDialogWithText(`Let's play! Your turn first.`);
         }
     }
 
@@ -303,7 +331,7 @@ const GameManager = function(){
 
 
     // DRIVER CODE
-    initGame();
+    initGame("Amy", false);
 
     return{
         players,

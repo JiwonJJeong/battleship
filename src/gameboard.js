@@ -299,53 +299,62 @@ const Gameboard = function () {
   }
 
   // start of code for guessing educated attack for computer player //
-  let previousAttack;
-  const makeRandomAttack = function(){
-    const randomIndex = Math.floor(Math.random()* attackCount);
-    previousAttack.coords = getNthOpenAttackMap(randomIndex)
-    previousAttack.hit = receiveAttack(previousAttack.coords);
+  let previousAttack = {};
+  const makeRandomAttack = function(otherPlayer){
+    const randomIndex = Math.floor(Math.random()* (99-attackCount));
+    previousAttack.coords = getNthOpenAttackMap(otherPlayer, randomIndex);
+    //console.log(previousAttack.coords);
+    previousAttack.hit = otherPlayer.gameboard.receiveAttack(previousAttack.coords);
   }
 
   let attackCount = 0;
-  const makeEducatedAttack = function(){
-    if (previousAttack.prevSuccessCoords != undefined){
-      const [r,c] = previousAttack.prevSuccessCoords;
+  const makeEducatedAttack = function(otherPlayer){
+    if (typeof previousAttack.prevSuccessCoords !== "undefined"){
+      const [r,c]= previousAttack.prevSuccessCoords;
       if (isOnBoardAndNotAttacked([r-1,c])){
         previousAttack.coords = [r-1,c];
-        previousAttack.hit = receiveAttack([r-1,c]);
+        previousAttack.hit = otherPlayer.gameboard.receiveAttack([r-1,c]);
       } else if (isOnBoardAndNotAttacked([r+1,c])){
         previousAttack.coords = [r+1,c];
-        previousAttack.hit = receiveAttack([r+1,c]);
+        previousAttack.hit = otherPlayer.gameboard.receiveAttack([r+1,c]);
       } else if (isOnBoardAndNotAttacked([r,c-1])){
         previousAttack.coords = [r,c-1];
-        previousAttack.hit = receiveAttack([r,c-1]);
+        previousAttack.hit = otherPlayer.gameboard.receiveAttack([r,c-1]);
       } else if (isOnBoardAndNotAttacked([r,c+1])){
         previousAttack.coords = [r,c+1];
-        previousAttack.hit = receiveAttack([r,c+1]);
+        previousAttack.hit = otherPlayer.gameboard.receiveAttack([r,c+1]);
       } else {
-        makeRandomAttack();
+        makeRandomAttack(otherPlayer);
       }
     } else{
-      makeRandomAttack();
+      makeRandomAttack(otherPlayer);
     }
     if (previousAttack.hit == "hit"){
       previousAttack.prevSuccessCoords = previousAttack.coords;
     }
+    console.log(`Received attack at ${previousAttack.coords} for player 1 by computer`)
     attackCount++;
+    return previousAttack.coords;
   }
 
-  const getNthOpenAttackMap = function(index){
-    for (let row of attackMap){
-      for (let [col, colValue] of Object.entries(row)){
-        if (colValue != "hit" && colValue != "miss"){
-          index--;
-          if (index <0){
-            const r = attackMap.indexOf(row);
-            return [r,col];
+  const getNthOpenAttackMap = function(otherPlayer, index){
+    const otherAttackMap = otherPlayer.gameboard.getAttackMap();
+    let count = index;
+    for (let row of otherAttackMap){
+      for (let c=0; c<10; c++){
+        const colValue = row[c];
+        //console.log(colValue);
+        if (typeof colValue == "undefined"){
+          count--;
+          if (count <0){
+            const r = otherAttackMap.indexOf(row);
+            return [r,c];
           }
         }
       }
     }
+    //console.log(count)
+    throw new Error("get Nth open attack map failed");
   }
 
   const isOnBoardAndNotAttacked = function([r,c]){
