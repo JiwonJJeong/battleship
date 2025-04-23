@@ -311,16 +311,18 @@ const Gameboard = function () {
   const makeEducatedAttack = function(otherPlayer){
     if (typeof previousAttack.prevSuccessCoords !== "undefined"){
       const [r,c]= previousAttack.prevSuccessCoords;
-      if (isOnBoardAndNotAttacked([r-1,c])){
+      console.log(r,c);
+      const otherAttackMap = otherPlayer.gameboard.getAttackMap();
+      if (isOnBoardAndNotAttacked([r-1,c],otherAttackMap)){
         previousAttack.coords = [r-1,c];
         previousAttack.hit = otherPlayer.gameboard.receiveAttack([r-1,c]);
-      } else if (isOnBoardAndNotAttacked([r+1,c])){
+      } else if (isOnBoardAndNotAttacked([r+1,c],otherAttackMap)){
         previousAttack.coords = [r+1,c];
         previousAttack.hit = otherPlayer.gameboard.receiveAttack([r+1,c]);
-      } else if (isOnBoardAndNotAttacked([r,c-1])){
+      } else if (isOnBoardAndNotAttacked([r,c-1],otherAttackMap)){
         previousAttack.coords = [r,c-1];
         previousAttack.hit = otherPlayer.gameboard.receiveAttack([r,c-1]);
-      } else if (isOnBoardAndNotAttacked([r,c+1])){
+      } else if (isOnBoardAndNotAttacked([r,c+1],otherAttackMap)){
         previousAttack.coords = [r,c+1];
         previousAttack.hit = otherPlayer.gameboard.receiveAttack([r,c+1]);
       } else {
@@ -357,8 +359,8 @@ const Gameboard = function () {
     throw new Error("get Nth open attack map failed");
   }
 
-  const isOnBoardAndNotAttacked = function([r,c]){
-    return (r<9 && r>0 && c<9 && c>0 && attackMap([r,c]) == undefined);
+  const isOnBoardAndNotAttacked = function([r,c], attackMap){
+    return (r<9 && r>0 && c<9 && c>0 && typeof attackMap[r][c] == "undefined");
   }
   // end of code related to making computer educated attack
 
