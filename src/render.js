@@ -10,12 +10,14 @@ const RenderManager = function(){
     let dialog;
     const initGameRender = function(player1Object, player2Object){
         const body = document.querySelector("body");
+        const gameContainer = createElement("div", "game container");
+        body.append(gameContainer);
         const header = buildHeader();
         board1 = buildBoardAndHeader(player1Object.number, player1Object.name);
         board2 = buildBoardAndHeader(player2Object.number, player2Object.name);
-        body.append(header, board1, board2);
+        gameContainer.append(header, board1, board2);
         dialog = buildDialog();
-        body.append(dialog);
+        gameContainer.append(dialog);
     };
 
     const buildHeader = function(){
@@ -242,9 +244,11 @@ const RenderManager = function(){
     // rendering pregame
     const renderPregame = function(){
         const body = document.querySelector("body");
+        const pregameContainer = createElement("div","pregame container");
+        body.append(pregameContainer);
         const title = buildPregameTitle();
         const gameSelectionButtons = buildSelectButtons();
-        body.append(title, gameSelectionButtons);
+        pregameContainer.append(title, gameSelectionButtons);
     }
 
     const buildPregameTitle = function(){
@@ -256,24 +260,37 @@ const RenderManager = function(){
     const buildSelectButtons = function(){
         const buttonContainer = createElement("div","button container");
         const singlePlayerButton = createElement("button","single button");
+        singlePlayerButton.textContent = "Single Player"
         const doublePlayerButton = createElement("button", "double button");
+        doublePlayerButton.textContent = "Hotseat Two Player"
         buttonContainer.append(singlePlayerButton, doublePlayerButton);
         return buttonContainer;
     }
 
     // this should render after game selection button
     const renderPlayerNameForm = function(isSinglePlayer){
-        const body = document.querySelector("body");
-        body.removeChild(body.querySelector(".form.container"));
         const formContainer = createElement("form","form container");
-        if (isSinglePlayer){
-            formContainer.append(buildNameInput("What is your name?"));
-        } else{
-            formContainer.append(buildNameInput("Enter player 1 name..."));
-            formContainer.append(buildNameInput("Enter player 2 name..."));
+        if (formContainer.querySelector(".input.container")){
+            formContainer.removeChild(formContainer.querySelector(".input.container"));
         }
-        formContainer.append(buildFormSubmitButton());
-        body.append(formContainer);
+        const inputContainer = createElement("form","input container");
+        if (isSinglePlayer){
+            inputContainer.append(buildNameInput("What is your name?"));
+        } else{
+            inputContainer.append(buildNameInput("Enter player 1 name..."));
+            inputContainer.append(buildNameInput("Enter player 2 name..."));
+        }
+        formContainer.append(inputContainer);
+        const pregameContainer = document.querySelector(".pregame.container");
+        pregameContainer.append(formContainer);
+
+    }
+
+    const renderFormButton = function(){
+        const formContainer = createElement("div","form container");
+        const button = createElement("button", "form submit");
+        button.textContent = "Let's Play!";
+        formContainer.append(button);
     }
 
     const buildNameInput = function(placeholderString){
@@ -281,12 +298,6 @@ const RenderManager = function(){
         nameInput.setAttribute("type", "text");
         nameInput.setAttribute("placeholder",placeholderString);
         return nameInput;
-    }
-
-    const buildFormSubmitButton = function(){
-        const button = createElement("button", "form submit");
-        button.textContent = "Let's Play!";
-        return button;
     }
 
     const createElement = function(elementType, classString = undefined){
@@ -312,6 +323,7 @@ const RenderManager = function(){
         revealDialogWithText,
         renderPregame,
         renderPlayerNameForm,
+        renderFormButton,
     }
 
 }();

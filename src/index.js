@@ -332,7 +332,32 @@ const GameManager = function(){
     const initPregame = function(){
         // renders title, game mode selection, form for names, button to start
         RenderManager.renderPregame();
-        //activatePregameButtons();
+        activatePregameButtons();
+    }
+
+    const activatePregameButtons = function(){
+        const buttonsArr = document.querySelectorAll(".pregame.container .button.container .button");
+        buttonsArr[0].addEventListener("click", () => handlePregameButtonClick(true));
+        buttonsArr[1].addEventListener("click", () => handlePregameButtonClick(false));
+    }
+
+    const handlePregameButtonClick = function(isSinglePlayer){
+        RenderManager.renderPlayerNameForm(isSinglePlayer);
+        // formSubmitButton is null if there is no buttons
+        const formSubmitButton = document.querySelector(".pregame.container .form.submit")
+        if (!formSubmitButton){
+            RenderManager.renderFormButton();
+            activateFormButtons();
+        }
+    }
+
+    const activateFormButtons = function(){
+        const formSubmitButton = document.querySelector(".pregame.container .form.submit");
+        formSubmitButton.addEventListener("click", handleFormSubmit());
+    }
+
+    const handleFormSubmit = function(){
+        //initGame();
     }
 
 
