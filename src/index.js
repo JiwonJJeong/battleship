@@ -328,9 +328,16 @@ const GameManager = function(){
         return new Promise(resolve => setTimeout(resolve, 1000));
     }
 
+    // Pregame code (like where you put player names and choose game type)
+    const initPregame = function(){
+        // renders title, game mode selection, form for names, button to start
+        RenderManager.renderPregame();
+        //activatePregameButtons();
+    }
+
 
     // DRIVER CODE
-    initGame("Amy", false);
+    initPregame();
 
     return{
         players,
