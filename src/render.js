@@ -268,22 +268,26 @@ const RenderManager = function(){
     }
 
     // this should render after game selection button
+    // if an existing form is there, only change inputs
     const renderPlayerNameForm = function(isSinglePlayer){
-        const formContainer = createElement("form","form container");
-        if (formContainer.querySelector(".input.container")){
-            formContainer.removeChild(formContainer.querySelector(".input.container"));
-        }
-        const inputContainer = createElement("form","input container");
+        const newInputContainer = createElement("form","input container");
         if (isSinglePlayer){
-            inputContainer.append(buildNameInput("What is your name?"));
+            newInputContainer.append(buildNameInput("What is your name?"));
         } else{
-            inputContainer.append(buildNameInput("Enter player 1 name..."));
-            inputContainer.append(buildNameInput("Enter player 2 name..."));
+            newInputContainer.append(buildNameInput("Enter player 1 name..."));
+            newInputContainer.append(buildNameInput("Enter player 2 name..."));
         }
-        formContainer.append(inputContainer);
-        const pregameContainer = document.querySelector(".pregame.container");
-        pregameContainer.append(formContainer);
-
+        let formContainer = document.querySelector(".form.container");
+        if (formContainer == null){
+            formContainer = createElement("form","form container");
+            formContainer.append(newInputContainer);
+            const pregameContainer = document.querySelector(".pregame.container");
+            pregameContainer.append(formContainer);
+        } else{
+            // just replace input container if form already exists
+            const oldInputContainer = formContainer.querySelector(".input.container");
+            formContainer.replaceChild(oldInputContainer, newInputContainer);
+        }
     }
 
     const renderFormButton = function(){
