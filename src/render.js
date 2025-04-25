@@ -287,7 +287,7 @@ const RenderManager = function(){
     }
 
     const renderFormButton = function(){
-        const formContainer = createElement("div","form container");
+        const formContainer = document.querySelector(".form.container");
         const button = createElement("button", "form submit");
         button.textContent = "Let's Play!";
         formContainer.append(button);

@@ -347,17 +347,31 @@ const GameManager = function(){
         const formSubmitButton = document.querySelector(".pregame.container .form.submit")
         if (!formSubmitButton){
             RenderManager.renderFormButton();
-            activateFormButtons();
+            activateFormButtons(isSinglePlayer);
         }
     }
 
-    const activateFormButtons = function(){
+    const activateFormButtons = function(isSinglePlayer){
         const formSubmitButton = document.querySelector(".pregame.container .form.submit");
-        formSubmitButton.addEventListener("click", handleFormSubmit());
+        formSubmitButton.addEventListener("click", (event) => handleFormSubmit(event,isSinglePlayer));
     }
 
-    const handleFormSubmit = function(){
-        //initGame();
+    const handleFormSubmit = function(event,isSinglePlayer){
+        event.preventDefault();
+        console.log(event);
+        let form1Value = event.target.parentNode.querySelector(".name.input").value;
+        if (form1Value ==""){
+            form1Value = "Player 1";
+        }
+        if (isSinglePlayer){
+            initGame(form1Value, false);
+        } else {
+            let form2Value = event.target.parentNode.querySelector(".name.input:nth-child(2)").value;
+            if (form2Value ==""){
+                form2Value = "Player 2";
+            }
+            initGame(form1Value,form2Value);
+        }
     }
 
 
