@@ -10,6 +10,7 @@ const RenderManager = function(){
     let dialog;
     const initGameRender = function(player1Object, player2Object){
         const body = document.querySelector("body");
+        body.removeChild(body.querySelector(".pregame.container"));
         const gameContainer = createElement("div", "game container");
         body.append(gameContainer);
         const header = buildHeader();
