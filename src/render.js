@@ -286,7 +286,7 @@ const RenderManager = function(){
         } else{
             // just replace input container if form already exists
             const oldInputContainer = formContainer.querySelector(".input.container");
-            formContainer.replaceChild(oldInputContainer, newInputContainer);
+            formContainer.replaceChild(newInputContainer, oldInputContainer);
         }
     }
 
