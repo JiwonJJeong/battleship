@@ -343,12 +343,8 @@ const GameManager = function(){
 
     const handlePregameButtonClick = function(isSinglePlayer){
         RenderManager.renderPlayerNameForm(isSinglePlayer);
-        // formSubmitButton is null if there is no buttons
-        const formSubmitButton = document.querySelector(".pregame.container .form.submit")
-        if (!formSubmitButton){
-            RenderManager.renderFormButton();
-            activateFormButtons(isSinglePlayer);
-        }
+        RenderManager.renderFormButton(isSinglePlayer);
+        activateFormButtons(isSinglePlayer);
     }
 
     const activateFormButtons = function(isSinglePlayer){

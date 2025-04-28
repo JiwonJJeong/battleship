@@ -291,8 +291,13 @@ const RenderManager = function(){
         }
     }
 
+    // if existing button exists, replace it
     const renderFormButton = function(){
         const formContainer = document.querySelector(".form.container");
+        const oldButton = document.querySelector(".form.submit");
+        if (oldButton != null){
+            formContainer.removeChild(oldButton);
+        }
         const button = createElement("button", "form submit");
         button.textContent = "Let's Play!";
         formContainer.append(button);
