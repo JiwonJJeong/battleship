@@ -1,3 +1,13 @@
+:root{
+    --content-color: lightgreen;
+    --button-clicked-color: #c3ecc3;
+    --bg-color: beige;
+    --accent-color: darkgreen;
+    --attacked-color: red;
+    --attacked-and-hit-color: lightgreen;
+}
+
+
 .pregame.container{
     margin-top: 30vh;
     font-family:Arial, Helvetica, sans-serif;
@@ -29,7 +39,7 @@
     }
 
     form{
-        margin-top: 10px;
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
         gap: 3px;
@@ -38,12 +48,37 @@
             display:flex;
             flex-direction: row;
             gap: 3px;
+
+            input{
+                padding: 12px 20px;
+                border: 2px solid gray;
+                border-radius: 24px;
+            }
         }
 
         button{
-            width: 100px;
+            width: max-content;
             align-self: center;
         }
+    }
+
+    button{
+        background-color: var(--content-color);
+        padding: 12px 28px;
+        border: 2px solid var(--accent-color);
+        color: black;
+        border-radius: 2px;
+    }
+
+    button:hover{
+        background-color: var(--accent-color);
+        transition-duration: 200ms;
+        color: white;
+    }
+
+    button:active{
+        border: 2px solid var(--content-color);
+        transition-duration: 1ms;
     }
 }
 

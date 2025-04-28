@@ -271,7 +271,7 @@ const RenderManager = function(){
     // this should render after game selection button
     // if an existing form is there, only change inputs
     const renderPlayerNameForm = function(isSinglePlayer){
-        const newInputContainer = createElement("form","input container");
+        const newInputContainer = createElement("div","input container");
         if (isSinglePlayer){
             newInputContainer.append(buildNameInput("What is your name?"));
         } else{
