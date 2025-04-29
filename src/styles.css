@@ -5,16 +5,21 @@
     --accent-color: darkgreen;
     --attacked-color: red;
     --attacked-and-hit-color: lightgreen;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+h1,h2,h3,p,button{
+    margin:0;
+    padding:0;
 }
 
 
 .pregame.container{
     margin-top: 30vh;
-    font-family:Arial, Helvetica, sans-serif;
     display:flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
+    gap: 12px;
 
     .title{
         font-weight: bolder;
@@ -84,20 +89,40 @@
 
 .game.container{
     display:grid;
-    grid-template-rows: 100px 1fr 10px;
+    grid-template-rows: max-content 1fr 10px;
     grid-template-columns: 1fr 1fr;
+    gap: 12px 36px;
+    align-items: start;
 
     /* grid area is r / c / r / c */
     .ui.container{
         grid-area: 1 / 1 / 2 / 3;
+        justify-self:center;
     }
 
-    .board.container.player-1{
+    .board-and-header.container{
+        width:min-content;
+        display:grid;
+        grid-template-rows: 72px 1fr min-content;
+
+        .board.header{
+            align-self: end;
+        }
+    }
+
+    .board-and-header.container.player-1{
         grid-area: 2 / 1 / 3 / 2;
+        justify-self: end;
     }
 
-    .board.container.player-2{
+    .board-and-header.container.player-2{
         grid-area: 2 / 2 / 3 / 3;
+        justify-self: start;
+    }
+
+    h2{
+        text-align: center;
+        text-wrap: wrap;
     }
 
     .hidden.samples{
