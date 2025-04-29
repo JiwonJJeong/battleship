@@ -205,6 +205,10 @@ button:active{
     }
 }
 
+.hidden.samples{
+    transform: translate(-999px, 0px);
+}
+
 /* style dialog */
 ::backdrop{
     background-color: purple;
