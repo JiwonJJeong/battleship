@@ -66,36 +66,37 @@ h1,h2,h3,p,button{
             align-self: center;
         }
     }
+}
 
-    button{
-        background-color: var(--content-color);
-        padding: 12px 28px;
-        border: 2px solid var(--accent-color);
-        color: black;
-        border-radius: 2px;
-    }
+button{
+    background-color: var(--content-color);
+    padding: 12px 28px;
+    border: 2px solid var(--accent-color);
+    color: black;
+    border-radius: 2px;
+}
 
-    button:hover{
-        background-color: var(--accent-color);
-        transition-duration: 200ms;
-        color: white;
-    }
+button:hover{
+    background-color: var(--accent-color);
+    transition-duration: 200ms;
+    color: white;
+}
 
-    button:active{
-        border: 2px solid var(--content-color);
-        transition-duration: 1ms;
-    }
+button:active{
+    border: 2px solid var(--content-color);
+    transition-duration: 1ms;
 }
 
 .game.container{
     display:grid;
-    grid-template-rows: max-content 1fr 10px;
+    grid-template-rows: max-content 1fr;
     grid-template-columns: 1fr 1fr;
     gap: 12px 36px;
     align-items: start;
 
     /* grid area is r / c / r / c */
     .ui.container{
+        margin-top: 15vh;
         grid-area: 1 / 1 / 2 / 3;
         justify-self:center;
     }
@@ -104,9 +105,22 @@ h1,h2,h3,p,button{
         width:min-content;
         display:grid;
         grid-template-rows: 72px 1fr min-content;
+        gap: 12px;
 
         .board.header{
             align-self: end;
+        }
+
+        .button.container{
+            width: min-content;
+            justify-self: center;
+            display:flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        button{
+            width: 163px;
         }
     }
 
