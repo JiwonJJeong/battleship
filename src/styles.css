@@ -1,10 +1,14 @@
 :root{
-    --content-color: lightgreen;
+    --content-color: #D6FFF6;
     --button-clicked-color: #c3ecc3;
-    --bg-color: beige;
-    --accent-color: darkgreen;
-    --attacked-color: red;
-    --attacked-and-hit-color: lightgreen;
+    --bg-color: rgb(255, 255, 240);
+    --accent-color: #4DCCBD;
+    --attacked-color: #ffc2c2; /*red*/
+    --attacked-and-hit-color: #bffdc2; /*green*/
+    --ship-color: #b3c7ff; /*blue*/
+    --board-background-color: #525252;
+    --board-grid-color: rgb(0, 0, 0);
+    --dialog-background-color: rgb(255, 198, 255);
     font-family:Arial, Helvetica, sans-serif;
 }
 
@@ -13,6 +17,9 @@ h1,h2,h3,p,button{
     padding:0;
 }
 
+body{
+    background-color: var(--bg-color);
+}
 
 .pregame.container{
     margin-top: 30vh;
@@ -56,7 +63,7 @@ h1,h2,h3,p,button{
 
             input{
                 padding: 12px 20px;
-                border: 2px solid gray;
+                border: 2px solid var(--board-background-color);
                 border-radius: 24px;
             }
         }
@@ -149,7 +156,7 @@ button:active{
     flex-direction: column;
     gap: 1px;
     width: min-content;
-    background-color: black;
+    background-color: var(--board-grid-color);
 
     > div{
         display: flex;
@@ -159,22 +166,22 @@ button:active{
         div{
             aspect-ratio: 1/1;
             height: 20px;
-            background-color:gray;
+            background-color:var(--board-background-color);
         }
 
         .ship.attacked{
-            background-color: purple;
+            background-color: var(--attacked-and-hit-color);
         }
 
         .attacked{
-            background-color: red;
+            background-color: var(--attacked-color);
         }
     }
 }
 
 .board.container.visible{
     .ship{
-        background-color: aqua;
+        background-color: var(--ship-color);
     }
 }
 
@@ -186,7 +193,7 @@ button:active{
         flex-direction: column;
 
         > div{
-            background-color: black;
+            background-color: var(--board-grid-color);
             width: min-content;
             display: flex;
             flex-direction: row;
@@ -195,7 +202,7 @@ button:active{
             div{
                 aspect-ratio: 1/1;
                 height: 20px;
-                background-color:aqua;
+                background-color:var(--ship-color);
             }
         }
     }
@@ -211,5 +218,5 @@ button:active{
 
 /* style dialog */
 ::backdrop{
-    background-color: purple;
+    background-color: var(--dialog-background-color);
 }
