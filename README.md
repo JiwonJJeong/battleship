@@ -5,6 +5,7 @@ The Odin Project JS project to implement the classic game "battleship" using tes
 - Take turns attacking one grid to sink ships!
 - There are 5 ships (of length 2, 3, 3, 4, and 5).
 - Ships cannot be placed adjacent (including diagonal) to eachother.
+- You can randomize or drag and drop ships only during the setup phase.
 - The game ends when one player sinks ALL the ships of the other player.
 
 ## Skills Used: Development and Architecture
