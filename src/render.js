@@ -123,6 +123,11 @@ const RenderManager = function(){
             boardDOM2.classList.add("visible");
         }
     }
+     
+    const renderTurnCounter = function(turnNum){
+        const header = document.querySelector(".ui.container .turn.text");
+        header.textContent = `Turn ${turnNum}`;
+    }
 
     // render ending game (playerName has won)
     const renderEndGame = function(winnerName){
@@ -335,6 +340,7 @@ const RenderManager = function(){
         renderPregame,
         renderPlayerNameForm,
         renderFormButton,
+        renderTurnCounter,
     }
 
 }();

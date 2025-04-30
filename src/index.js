@@ -30,6 +30,7 @@ const GameManager = function(){
     }
 
     const handleBoardClick = async function(event){
+        turnCounter++;
         let target = event.target;
         let playerNumber = target.parentNode.parentNode.getAttribute("playernum");
         let y = target.getAttribute("col");
@@ -42,6 +43,7 @@ const GameManager = function(){
         await shortSleep();
         if (isSinglePlayer){
             await emulateComputerTurn();
+            RenderManager.renderTurnCounter(turnCounter);
         } else if (playerObject.gameboard.isAllSunk()){
             endGame(playerNumber);
         } else{
@@ -62,11 +64,16 @@ const GameManager = function(){
         }
     }
 
+    let turnCounter;
     const initPlay = function(){
+        turnCounter = 1;
         // assign event listener for attacks
         // later make first turn random or chosen
         players.player2.boardDOM.classList.add("visible");
         passTurnTo(1);
+        if (isSinglePlayer){
+            RenderManager.renderTurnCounter(turnCounter);
+        }
         const dialog = document.querySelector("dialog");
         dialog.close();
         return;
