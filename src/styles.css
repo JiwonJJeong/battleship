@@ -233,3 +233,7 @@ button:active{
 ::backdrop{
     background-color: var(--dialog-background-color);
 }
+
+dialog{
+    text-align: center;
+}

@@ -181,16 +181,16 @@ const GameManager = function(){
     const completeStaging = async function(boardDOM){
         deactivateStaging(boardDOM);
         if (boardDOM.getAttribute("playernum") == "1" && !isSinglePlayer){
-            RenderManager.revealDialogWithText(`Now let ${players.player2.name} set up.`);
+            RenderManager.revealDialogWithText(`Let ${players.player2.name} set up.`);
             activateStaging(players.player2);
         } else if (!isSinglePlayer){
             initPlay();
-            RenderManager.revealDialogWithText(`Let's play! ${players.player1.name} first.`);
+            RenderManager.revealDialogWithText(`${players.player1.name}'s turn first.`);
         } else{
             // this case is when it is a single player game
             randomizeBoard(players.player2);
             initPlay();
-            RenderManager.revealDialogWithText(`Let's play! Your turn first.`);
+            RenderManager.revealDialogWithText(`Your turn first.`);
         }
     }
 
