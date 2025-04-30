@@ -212,7 +212,7 @@ button:active{
     }
 }
 
-.board.container:not(.visible){
+.board.container.active-game:not(.visible){
     > div >div:not(.attacked):hover {
         background-color: var(--hover-board-color);
     }

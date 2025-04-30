@@ -69,6 +69,8 @@ const GameManager = function(){
         turnCounter = 1;
         // assign event listener for attacks
         // later make first turn random or chosen
+        players.player1.boardDOM.classList.add("active-game");
+        players.player2.boardDOM.classList.add("active-game");
         players.player2.boardDOM.classList.add("visible");
         passTurnTo(1);
         if (isSinglePlayer){
@@ -106,6 +108,8 @@ const GameManager = function(){
 
     // player with playerNumber lost
     const endGame = function(playerNumber){
+        players.player1.boardDOM.classList.remove("active-game");
+        players.player2.boardDOM.classList.remove("active-game");
         let winnerName;
         if (playerNumber ==1){
             winnerName = players.player2.name;
