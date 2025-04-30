@@ -119,7 +119,11 @@ const GameManager = function(){
     const activateReplayButton = function(){
         const replayButton = document.querySelector("div.end.container button");
         console.log(replayButton);
-        replayButton.addEventListener("click", enterGameStaging);
+        replayButton.addEventListener("click", () => {
+            RenderManager.removeEndGameContainer();
+            enterGameStaging();
+        }
+        );
     }
 
     // START OF CODE RELATED TO GAME STAGING

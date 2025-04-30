@@ -247,6 +247,11 @@ const RenderManager = function(){
         }
     }
 
+    const removeEndGameContainer = function(){
+        const endGameContainer = document.querySelector(".end.container");
+        endGameContainer.parentNode.removeChild(endGameContainer);
+    }
+
     // rendering pregame
     const renderPregame = function(){
         const body = document.querySelector("body");
@@ -341,6 +346,7 @@ const RenderManager = function(){
         renderPlayerNameForm,
         renderFormButton,
         renderTurnCounter,
+        removeEndGameContainer,
     }
 
 }();
