@@ -137,8 +137,8 @@ const RenderManager = function(){
         const playAgainButton = createElement("button", "reset button");
         playAgainButton.textContent = "Play Again?";
         winnerTextContainer.append(winnerText, playAgainButton);
-        const body = document.querySelector("body");
-        body.append(winnerTextContainer);
+        const gameContainer = document.querySelector(".game.container");
+        gameContainer.append(winnerTextContainer);
     }
 
     const renderStaging = function(attackMap1, shipMap1, attackMap2, shipMap2){
