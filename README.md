@@ -3,17 +3,19 @@ The Odin Project JS project to implement the classic game "battleship" using tes
 
 ## Skills Used: Development and Architecture
 - Set up git, webpack, ESLint, Prettier, Jest for modular, test-driven development
-- Modularize code with ESM and frequently created single responsibility functions to keep code DRY & revisitable
+- Modularize code with ESM and frequently create single responsibility functions to keep code DRY & revisitable
 - Import private npm package from linked-list project by JiwonJJeong to reduce code redundancy
 - Keep game logic removed from DOM and render as much as possible
 
 ## Skills Used: Data Structures and Algorithms
-- Choose map and linked list data structure (DS) to quickly retrieve ship Object information
-- Algorithmically traverse and interact with DS to reset board data and create allowed drag and drop locations
+- Choose map and linked list data structure (DS) to quickly retrieve Ship object information
+- Aggregate objects from factory composition into a main Players object for easy data access
+- Algorithmically interact with DS for specific problems -- like determining disallowed drop locations during setup time
 
 ## Skills Used: Web Dev
 - Manipulate DOM dynamically using dynamic identifiers and CSS pseudoclasses
 - Combine event delegation, listeners, HTML attributes, and Drag and Drop API to allow board setup with drag and drop
+- Mirror HTML structure with nested selectors and use private variables for maintainable CSS
 
 ## The Drag and Drop Feature: Example of Problem Solving
 - Requirements: Move multi-element ships into a board of multi-element containers with specificity
