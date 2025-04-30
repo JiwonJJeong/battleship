@@ -143,7 +143,7 @@ const RenderManager = function(){
 
     const renderStaging = function(attackMap1, shipMap1, attackMap2, shipMap2){
         const header = document.querySelector(".ui.container .turn.text");
-        header.textContent = "Setup Time";
+        header.textContent = "Drag and drop to set up!";
         renderBoardReset(attackMap1, shipMap1, board1.querySelector(".board.container"));
         renderBoardReset(attackMap2, shipMap2, board2.querySelector(".board.container"));
         renderShipSamples();
