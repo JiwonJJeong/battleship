@@ -100,8 +100,8 @@ const GameManager = function(){
         players = {player1, player2};
         enterGameStaging();
         //just for testing!
-        const header = document.querySelector(".ui.container");
-        header.addEventListener("click", () => endGame(1))
+        //const header = document.querySelector(".ui.container");
+        //header.addEventListener("click", () => endGame(1))
     };
 
     // player with playerNumber lost
