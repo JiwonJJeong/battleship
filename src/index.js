@@ -41,11 +41,11 @@ const GameManager = function(){
         RenderManager.renderAttacked(target);
         playerObject.boardDOM.removeEventListener("click", handleBoardClick);
         await shortSleep();
-        if (isSinglePlayer){
+        if (playerObject.gameboard.isAllSunk()){
+            endGame(playerNumber);
+        } else if (isSinglePlayer){
             await emulateComputerTurn();
             RenderManager.renderTurnCounter(turnCounter);
-        } else if (playerObject.gameboard.isAllSunk()){
-            endGame(playerNumber);
         } else{
             passTurnTo(playerNumber); // We pass turn to player's board we just clicked
         }
@@ -100,8 +100,8 @@ const GameManager = function(){
         players = {player1, player2};
         enterGameStaging();
         //just for testing!
-        const header = document.querySelector(".ui.container");
-        header.addEventListener("click", () => endGame(1))
+        //const header = document.querySelector(".ui.container");
+        //header.addEventListener("click", () => endGame(1))
     };
 
     // player with playerNumber lost
