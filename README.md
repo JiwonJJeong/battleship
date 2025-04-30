@@ -13,7 +13,7 @@ The Odin Project JS project to implement the classic game "battleship" using tes
 - Algorithmically interact with DS for specific problems -- like determining disallowed drop locations during setup time
 
 ## Skills Used: Web Dev
-- Manipulate DOM dynamically using dynamic identifiers and CSS pseudoclasses
+- Manipulate DOM dynamically using dynamic identifiers, CSS combinators, and CSS pseudoclasses
 - Combine event delegation, listeners, HTML attributes, and Drag and Drop API to allow board setup with drag and drop
 - Mirror HTML structure with nested selectors and use private variables for maintainable CSS
 
@@ -37,4 +37,5 @@ The Odin Project JS project to implement the classic game "battleship" using tes
 - CSS pseudoclass :nth-child(x) counts from 1, not 0
 - Data transfers from DragEvent objects are converted to string data types
 - Cannot use normal Drag and Drop API implementation with ES6 Modules. Need to use event listeners for "drop", "dragstart", etc...
+- :not() is a useful CSS pseudoclass
 
