@@ -109,13 +109,14 @@ button:active{
     }
 
     .board-and-header.container{
-        width:min-content;
+        width:fit-content;
         display:grid;
         grid-template-rows: 72px 1fr min-content;
         gap: 12px;
 
         .board.header{
             align-self: end;
+            word-wrap: break-word;
         }
 
         .button.container{

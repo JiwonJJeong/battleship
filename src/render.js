@@ -307,6 +307,7 @@ const RenderManager = function(){
         const nameInput = createElement("input", "name input");
         nameInput.setAttribute("type", "text");
         nameInput.setAttribute("placeholder",placeholderString);
+        nameInput.setAttribute("maxlength", 20);
         return nameInput;
     }
 
