@@ -13,7 +13,7 @@ The Odin Project JS project to implement the classic game "battleship" using tes
 ## Achieved Learning Goals
 * **Test-driven development**: Used Jest to create unit tests throughout development.
 * **DRY and revisitable coding**: Imported private npm package from [linked list project](https://github.com/JiwonJJeong/linked-lists) and focused on maintaining separated modules and single responsibility functions.
-* **Data Structure Algorithms**: Authored algorithms to interact with DS on specific problems -- like determining disallowed drop locations during setup time.
+* **Data structure algorithms**: Authored algorithms to interact with DS on specific problems -- like determining disallowed drop locations during setup time.
 * **Working with new APIs**: Searched Drag and Drop API to create visuals and logic specific to project.
 
 ## Highlight Problem: The Drag and Drop Feature
